@@ -35,8 +35,8 @@ public class Bubble {
 
         //if the bubble is at the ground, add hops
         if(position.y < 0) {
-            velocity.y = 3;
-            position.add(MOVEMENT * dt, velocity.y , 0);
+           velocity.y = 3;
+           //position.add(MOVEMENT * dt, velocity.y , 0);
         }
         velocity.scl(1/dt);
 
