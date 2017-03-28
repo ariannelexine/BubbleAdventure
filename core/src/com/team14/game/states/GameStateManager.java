@@ -31,7 +31,7 @@ public class GameStateManager {
 
     //pop a state and immediately push one on
     public void set(State state){
-        states.pop();
+        states.pop().dispose();//should dispose of a state we are no longer using to avoid memory leaks
         states.push(state);
     }
 
