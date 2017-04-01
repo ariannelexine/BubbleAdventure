@@ -13,7 +13,7 @@ import java.util.Random;
 
 public class Vegetable {
     public static final  int VEGETABLE_WIDTH = 25;
-    private static final int FLUCTUATION = 450;
+    private static final int FLUCTUATION = 350;
     private Texture vegetable;
     private Vector2 posVegetable;
     private Rectangle boundsVeg;

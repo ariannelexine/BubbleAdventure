@@ -13,7 +13,7 @@ import java.util.Random;
 
 public class JunkFood {
     public static final  int JF_WIDTH = 30;
-    private static final int FLUCTUATION = 450;
+    private static final int FLUCTUATION = 350;
     private Texture junk;
     private Vector2 posJunk;
     private Rectangle boundsJunk;

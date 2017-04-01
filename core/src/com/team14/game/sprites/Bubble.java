@@ -3,6 +3,7 @@ package com.team14.game.sprites;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.team14.game.BubbleAdventure;
 
 /**
  * Created by Arianne on 3/26/17.
@@ -42,6 +43,13 @@ public class Bubble {
             velocity.y = 3;
             position.add(MOVEMENT * dt, velocity.y , 0);
         }
+
+
+        //Game screen ceiling, doesn't let bubble go past top of the screen
+        //Hard coded as of right now
+        if(position.y >= 350)
+            velocity.y = 0;
+
         velocity.scl(1/dt);
         bounds.setPosition(position.x, position.y);
 
