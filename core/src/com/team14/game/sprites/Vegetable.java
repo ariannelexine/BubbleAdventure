@@ -1,7 +1,9 @@
 package com.team14.game.sprites;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 
 import java.util.Random;
 
@@ -14,13 +16,17 @@ public class Vegetable {
     private static final int FLUCTUATION = 450;
     private Texture vegetable;
     private Vector2 posVegetable;
+    private Rectangle boundsVeg;
     private Random rand;
 
     public Vegetable(float x) {
         vegetable = new Texture("tomato.png");
+
         rand = new Random();
 
         posVegetable = new Vector2(x, rand.nextInt(FLUCTUATION));
+
+        boundsVeg = new Rectangle(posVegetable.x, posVegetable.y, vegetable.getWidth(), vegetable.getHeight());
     }
 
 
@@ -34,5 +40,10 @@ public class Vegetable {
 
     public void reposition(float x){
         posVegetable.set(x, rand.nextInt(FLUCTUATION));
+        boundsVeg.setPosition(posVegetable.x, posVegetable.y);
+    }
+
+    public boolean collides(Rectangle player){
+        return player.overlaps(boundsVeg);
     }
 }

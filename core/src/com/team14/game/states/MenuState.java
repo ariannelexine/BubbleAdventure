@@ -15,7 +15,7 @@ public class MenuState extends State{
 
     public MenuState(GameStateManager gsm) {
         super(gsm);
-        background = new Texture("bg.jpg");
+        background = new Texture("menubg.jpg");
         playBtn = new Texture("playbtn.png");
     }
 
@@ -23,7 +23,7 @@ public class MenuState extends State{
     public void handleInput() {
         //if user finger taps, mouse clicks etc
         if(Gdx.input.justTouched()){
-            gsm.set(new PlayState(gsm));
+            gsm.set(new StartState(gsm));
         }
 
     }

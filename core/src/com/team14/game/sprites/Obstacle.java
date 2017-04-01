@@ -4,63 +4,58 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import org.w3c.dom.css.Rect;
-
 import java.util.Random;
 
 /**
- * Created by Arianne on 3/18/17.
+ * Created by Arianne on 3/29/17.
  */
 
 public class Obstacle {
-    public static final int TUBE_WIDTH = 52;
-    private static final int FLUCTUATION = 130;
-    private static final int TUBE_GAP = 100;
-    private static final int LOWEST_OPENING = 120;
-
-    private Texture topTube, bottomTube;
-    private Vector2 posTopTube, posBotTube;
-    private Rectangle boundsTop, boundsBot;
-    private Random rand;
+    public static final int OBSTACLE_WIDTH = 130;
+    private Texture sign, cart;
+    private Vector2 posSign, posCart;
+    private Rectangle boundsSign, boundsCart;
+    private Random random;
 
     public Obstacle(float x) {
-        topTube = new Texture("topTube.png");
-        bottomTube = new Texture("bottomtube.png");
-        rand = new Random();
+        sign = new Texture("sign.png");
+      //  cart = new Texture("cart.png");
 
-        posTopTube = new Vector2(x, rand.nextInt(FLUCTUATION) + TUBE_GAP + LOWEST_OPENING);
-        posBotTube = new Vector2(x, posTopTube.y - TUBE_GAP - bottomTube.getHeight());
-
-        boundsTop = new Rectangle(posTopTube.x, posTopTube.y, topTube.getWidth(), topTube.getHeight());
-        boundsBot = new Rectangle(posBotTube.x, posBotTube.y, bottomTube.getWidth(), bottomTube.getHeight());
-
-
+        posSign = new Vector2(x, 325);
+       // posCart = new Vector2(x + 250, 0);
+        boundsSign = new Rectangle(posSign.x, posSign.y, sign.getWidth(), sign.getHeight());
+       // boundsCart = new Rectangle(posCart.x, posCart.y, cart.getWidth(), cart.getHeight());
     }
 
-    public Texture getTopTube() {
-        return topTube;
+    public Texture getSign() {
+        return sign;
     }
 
-    public Texture getBottomTube() {
-        return bottomTube;
+    public Vector2 getPosSign() {
+        return posSign;
     }
 
-    public Vector2 getPosTopTube() {
-        return posTopTube;
+
+
+    public boolean collides(Rectangle player) {
+        return player.overlaps(boundsSign);
     }
 
-    public Vector2 getPosBotTube() {
-        return posBotTube;
+    public Texture getCart() {
+        return cart;
+    }
+
+    public Vector2 getPosCart() {
+        return posCart;
     }
 
     public void reposition(float x) {
-        posTopTube.set(x, rand.nextInt(FLUCTUATION) + TUBE_GAP + LOWEST_OPENING);
-        posBotTube.set(x, posTopTube.y - TUBE_GAP - bottomTube.getHeight());
-        boundsTop.setPosition(posTopTube.x, posTopTube.y);
-        boundsBot.setPosition(posBotTube.x, posBotTube.y);
-    }
-
-    public boolean collides(Rectangle player){
-        return player.overlaps(boundsTop) || player.overlaps(boundsBot);
+        random = new Random();
+        int randomNum = random.nextInt(500 + 1 - 125) + 125;
+        posSign.set(x + randomNum, 325);
+      //  System.out.println(x + randomNum);
+      //  posCart.set(x, 0);
+        boundsSign.setPosition(posSign.x, posSign.y);
+        // boundsCart.setPosition(posCart.x, posCart.y);
     }
 }

@@ -1,6 +1,7 @@
 package com.team14.game.sprites;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -9,9 +10,10 @@ import com.badlogic.gdx.math.Vector3;
 
 public class Bubble {
     private static final int GRAVITY = -10;
-    private static final int MOVEMENT = 100;
+    private static final int MOVEMENT = 100; //speed of food/bubble in x direction.
     private Vector3 position;
     private Vector3 velocity;
+    private Rectangle bounds;
 
     private Texture bubble;
 
@@ -19,7 +21,9 @@ public class Bubble {
         position = new Vector3(x, y, 0); //starting position of bubble
         velocity = new Vector3(0, 0, 0); //starting not moving
 
-        bubble = new Texture("bubble.png");
+        bubble = new Texture("SmallBubble.png");
+
+        bounds = new Rectangle(x, y, bubble.getWidth(),bubble.getHeight());
     }
 
     //send delta time to bubble class and allow it to do the math to reset position in gameworld
@@ -39,6 +43,7 @@ public class Bubble {
             position.add(MOVEMENT * dt, velocity.y , 0);
         }
         velocity.scl(1/dt);
+        bounds.setPosition(position.x, position.y);
 
     }
 
@@ -52,5 +57,20 @@ public class Bubble {
 
     public void jump(){
         velocity.y = 250;
+    }
+
+
+    public Rectangle getBounds(){
+        return bounds;
+    }
+
+    public void grow(int x, int y){
+        bubble = new Texture("BigBubble.png");
+        bounds = new Rectangle(x, y, bubble.getWidth(),bubble.getHeight());
+    }
+
+    public void shrink(int x, int y){
+        bubble = new Texture("SmallBubble.png");
+        bounds = new Rectangle(x, y, bubble.getWidth(),bubble.getHeight());
     }
 }
