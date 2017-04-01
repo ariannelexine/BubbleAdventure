@@ -15,7 +15,8 @@ public class MenuState extends State{
 
     public MenuState(GameStateManager gsm) {
         super(gsm);
-        background = new Texture("menubg.jpg");
+        cam.setToOrtho(false, BubbleAdventure.WIDTH / 2, BubbleAdventure.HEIGHT / 2);
+        background = new Texture("bg.jpg");
         playBtn = new Texture("playbtn.png");
     }
 
@@ -39,10 +40,11 @@ public class MenuState extends State{
     //CLose box, and it will render everything you need to in it
     @Override
     public void render(SpriteBatch sb) {
+        sb.setProjectionMatrix(cam.combined);
         sb.begin(); //opens
-        sb.draw(background, 0, 0, BubbleAdventure.WIDTH, BubbleAdventure.HEIGHT);//draw(image to draw, x-pos, y-pos, width of screen, height)
+        sb.draw(background, 0, 0);//draw(image to draw, x-pos, y-pos, width of screen, height)
         //0,0 = bottom left hand of screen
-        sb.draw(playBtn, (BubbleAdventure.WIDTH / 2) - (playBtn.getWidth() / 2), BubbleAdventure.HEIGHT / 2); //centers button
+        sb.draw(playBtn, cam.position.x = playBtn.getWidth() / 2, cam.position.y); //centers button
         sb.end(); //close
     }
 
