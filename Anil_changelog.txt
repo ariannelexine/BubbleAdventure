@@ -6,6 +6,10 @@ Changelog:
 -Changes Line 51 in Bubble.java class. Changed velocity.y value to -1. Value of zero was conflicting with line 34.
 	Value -1 causes bubble to bounce off cieling instead of "sticking" a bit to the top.
 
+-Added code to collision detection so that only the first collision is registered for score incrementation.
+
+-Added code to ensure that if the bubble was previously big, it does not accumlate a score until it is tiny again
+
 -Added score variable to the BubbleAdventrue.java file so that the score value can be passed for storage and display in all game states if needed.
 
 -Score display now functional during gameplay
