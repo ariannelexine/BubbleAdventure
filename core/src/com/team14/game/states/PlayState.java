@@ -1,7 +1,9 @@
 package com.team14.game.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.team14.game.BubbleAdventure;
@@ -21,6 +23,9 @@ public class PlayState extends State {
     private static final int JUNK_SPACING = 275;
 
     private static final int OBSTACLE_COUNT = 1;
+    //keeps track of whether or not the last state of the character was large or not. Used to determine whether score increments
+    private boolean wasBig = false;
+
 
     private Bubble bubble;
     private Texture bg;
@@ -29,6 +34,10 @@ public class PlayState extends State {
     private Array<JunkFood> junkFoods;
     private Array<Obstacle> obstacles;
 
+    private String scoreString;
+    private BitmapFont scoreFont;
+
+    /*Constructor*/
     public PlayState(GameStateManager gsm) {
         super(gsm);
 
@@ -56,6 +65,10 @@ public class PlayState extends State {
             obstacles.add(new Obstacle(i * Obstacle.OBSTACLE_WIDTH));
         }
 
+        //construct score string and font
+        scoreString = "Score: 0";
+        scoreFont = new BitmapFont();
+
 
     }
 
@@ -73,12 +86,20 @@ public class PlayState extends State {
         cam.position.x = bubble.getPosition().x + 80;
 
         for(Vegetable vegetable : vegetables){
-            if(cam.position.x - (cam.viewportWidth / 2) > vegetable.getPosVegetable().x + vegetable.getVegetable().getWidth())
+            if(cam.position.x - (cam.viewportWidth / 2) > vegetable.getPosVegetable().x + vegetable.getVegetable().getWidth()) {
                 vegetable.reposition(vegetable.getPosVegetable().x + ((Vegetable.VEGETABLE_WIDTH + VEGETABLE_SPACING) * VEGETABLE_COUNT));
-
-            if(vegetable.collides(bubble.getBounds())) {
-                bubble.shrink((int) bubble.getPosition().x,(int)bubble.getPosition().y);
+                vegetable.resetLock();//resets the lock on the object once it is out of view.
             }
+            if(vegetable.collides(bubble.getBounds())) {
+                if(!wasBig)//if character wasn't big previously gains points
+                {
+                    BubbleAdventure.increment();
+                    scoreString = "Score: " + BubbleAdventure.getScore();//update string with now score value
+                }
+                bubble.shrink((int) bubble.getPosition().x,(int)bubble.getPosition().y);
+                wasBig = false;//last state updated for character
+            }
+
 
         }
 
@@ -86,8 +107,10 @@ public class PlayState extends State {
             if(cam.position.x - (cam.viewportWidth / 2) > junk.getPosJunk().x + junk.getJunk().getWidth())
                 junk.reposition(junk.getPosJunk().x + ((JunkFood.JF_WIDTH + JUNK_SPACING) * JUNK_COUNT));
 
-            if(junk.collides(bubble.getBounds()))
-                bubble.grow((int) bubble.getPosition().x,(int)bubble.getPosition().y);
+            if(junk.collides(bubble.getBounds())) {
+                bubble.grow((int) bubble.getPosition().x, (int) bubble.getPosition().y);
+                wasBig = true;//state of the character has changed. will not be able to score until small again
+            }
 
         }
 
@@ -114,6 +137,9 @@ public class PlayState extends State {
         sb.begin();
         sb.draw(bg, cam.position.x - (cam.viewportWidth / 2), 0); //positions background picture to fit phone screen
         sb.draw(bubble.getTexture(), bubble.getPosition().x, bubble.getPosition().y);
+        /*Rendering score output*/
+        scoreFont.setColor(Color.GOLD);//can also input rgb values
+        scoreFont.draw(sb, scoreString, cam.position.x - cam.viewportWidth/2, cam.viewportHeight);
 
         for(Vegetable vegetable : vegetables)
             sb.draw(vegetable.getVegetable(), vegetable.getPosVegetable().x, vegetable.getPosVegetable().y);

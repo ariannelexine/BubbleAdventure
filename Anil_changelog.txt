@@ -1,0 +1,17 @@
+Changelog:
+04/01/2017 - 04/02/2017
+
+-Change line 50 removed hard coded value in condition and replaced with viewport height - bubble height
+
+-Changes Line 51 in Bubble.java class. Changed velocity.y value to -1. Value of zero was conflicting with line 34.
+	Value -1 causes bubble to bounce off cieling instead of "sticking" a bit to the top.
+
+-Added score variable to the BubbleAdventrue.java file so that the score value can be passed for storage and display in all game states if needed.
+
+-Score display now functional during gameplay
+
+To Do:
+
+-Add options in GameOverState to either return to main menu or 	play again.
+
+-Display resulting score at GameOverState.

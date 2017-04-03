@@ -47,8 +47,9 @@ public class Bubble {
 
         //Game screen ceiling, doesn't let bubble go past top of the screen
         //Hard coded as of right now
-        if(position.y >= 350)
-            velocity.y = 0;
+        if(position.y > BubbleAdventure.HEIGHT/2 - bubble.getHeight())// removed hard codded amouint 350-Anil
+            velocity.y = -1;
+
 
         velocity.scl(1/dt);
         bounds.setPosition(position.x, position.y);

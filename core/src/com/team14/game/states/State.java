@@ -29,5 +29,6 @@ public abstract class State {
     public abstract void update(float dt); //dt - delta time, time between one frame rendered and another from rendered
     public abstract void render(SpriteBatch sb); //sb - container for everything we need to render to screen (textures, images)
     public abstract void dispose(); //used to avoid memory leaks
+    //public abstract
 
 }

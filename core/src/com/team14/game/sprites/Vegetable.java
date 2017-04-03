@@ -18,6 +18,7 @@ public class Vegetable {
     private Vector2 posVegetable;
     private Rectangle boundsVeg;
     private Random rand;
+    private boolean locked;//variable to lock out collision detection after the first has been recorded.
 
     public Vegetable(float x) {
         vegetable = new Texture("tomato.png");
@@ -27,6 +28,8 @@ public class Vegetable {
         posVegetable = new Vector2(x, rand.nextInt(FLUCTUATION));
 
         boundsVeg = new Rectangle(posVegetable.x, posVegetable.y, vegetable.getWidth(), vegetable.getHeight());
+
+        locked = false;
     }
 
 
@@ -44,6 +47,12 @@ public class Vegetable {
     }
 
     public boolean collides(Rectangle player){
-        return player.overlaps(boundsVeg);
+        if(!locked && player.overlaps(boundsVeg)) {
+            locked = true;
+            return player.overlaps(boundsVeg);
+        }
+        return false;
     }
+
+    public void resetLock(){locked = false;}
 }

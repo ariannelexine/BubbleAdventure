@@ -4,7 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.team14.game.states.GameStateManager;
 import com.team14.game.states.MenuState;
@@ -18,6 +18,12 @@ public class BubbleAdventure extends ApplicationAdapter {
 	private GameStateManager gsm;
 	private SpriteBatch batch; //only need one bc heavy files, just pass around each state
 	Texture img;
+
+	//score variable
+	private static int scoreNum;
+
+
+
 	
 	@Override
 	public void create () {
@@ -25,6 +31,8 @@ public class BubbleAdventure extends ApplicationAdapter {
 		gsm = new GameStateManager();
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		gsm.push(new MenuState(gsm));
+		scoreNum = 0;
+
 	}
 
 
@@ -42,4 +50,15 @@ public class BubbleAdventure extends ApplicationAdapter {
 		batch.dispose();
 		img.dispose();
 	}
+
+	public static void increment()
+	{
+		scoreNum += 100;
+		System.out.println(scoreNum);
+	}
+
+	public static int getScore(){return scoreNum;}
+
+	public static void resetScore(){scoreNum = 0;}
+
 }

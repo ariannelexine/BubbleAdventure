@@ -42,6 +42,7 @@ public class GameOverState extends State{
         sb.draw(bg, 0,0);
         sb.draw(gameOver, 25, 200); //should probably not hard code will deal wid it l8r
         sb.end();
+        
     }
 
     @Override
