@@ -1,5 +1,5 @@
 Changelog:
-04/01/2017 - 04/02/2017
+*04/01/2017 - 04/02/2017
 
 -Change line 50 removed hard coded value in condition and replaced with viewport height - bubble height
 
@@ -14,8 +14,18 @@ Changelog:
 
 -Score display now functional during gameplay
 
+
+
+04/05/2017
+
+-Fixed issue where score was not properly resetting after new game
+
 To Do:
+
+-eliminate apparent shaking of the score display during gameplay
 
 -Add options in GameOverState to either return to main menu or 	play again.
 
 -Display resulting score at GameOverState.
+
+-Properly dispose of resources

@@ -26,6 +26,7 @@ public class GameOverState extends State{
     @Override
     public void handleInput() {
         if(Gdx.input.justTouched()){
+            BubbleAdventure.resetScore();//reset score to 0 before returning
             gsm.set(new StartState(gsm));
         }
     }
@@ -42,7 +43,7 @@ public class GameOverState extends State{
         sb.draw(bg, 0,0);
         sb.draw(gameOver, 25, 200); //should probably not hard code will deal wid it l8r
         sb.end();
-        
+
     }
 
     @Override
