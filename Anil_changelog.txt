@@ -20,9 +20,11 @@ Changelog:
 
 -Fixed issue where score was not properly resetting after new game
 
+-Fixed score display shaking
+
 To Do:
 
--eliminate apparent shaking of the score display during gameplay
+-eliminate apparent shaking of the score display during gameplay(complete)
 
 -Add options in GameOverState to either return to main menu or 	play again.
 
