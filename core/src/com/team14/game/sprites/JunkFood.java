@@ -19,9 +19,11 @@ public class JunkFood {
     private Rectangle boundsJunk;
     private Random rand;
 
+    private String[] JFStringArray = {"cupcake.png", "cookie.png", "donut.png", "burger.png", "pizza.png"};
 
-    public JunkFood(float x) {
-        junk = new Texture("cupcake.png");
+
+    public JunkFood(float x, int i) {
+        junk = new Texture(JFStringArray[i]);
 
         rand = new Random();
 

@@ -17,12 +17,11 @@ public class BottomObstacle {
     private Rectangle boundsBottom;
     private Random rand;
 
-    private static final int botObStacleStringCount = 2;
     private String[] botObstacleArray = {"cart.png", "wetfloor.png"};
 
-    public BottomObstacle(float x) {
+    public BottomObstacle(float x, int i) {
         rand = new Random();
-        bottomObstacle = new Texture(botObstacleArray[rand.nextInt(botObStacleStringCount)]);
+        bottomObstacle = new Texture(botObstacleArray[i]);
         posBottom = new Vector2(x + 250, 0);
         //the + & - 20 gives a little leeway for the bubble to touch obstacle image when they're not rectangular in shape
         boundsBottom = new Rectangle(posBottom.x + 10, posBottom.y - 10, bottomObstacle.getWidth(), bottomObstacle.getHeight());

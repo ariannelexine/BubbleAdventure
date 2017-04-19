@@ -14,19 +14,21 @@ import java.util.Random;
 public class Vegetable {
     public static final  int VEGETABLE_WIDTH = 25;
     private static final int FLUCTUATION = 350;
+
     private Texture vegetable;
     private Vector2 posVegetable;
     private Rectangle boundsVeg;
     private Random rand;
     private boolean locked;//variable to lock out collision detection after the first has been recorded.
 
-    private static final int vegStringCount = 5;
-    private String[] vegetableArray = {"tomato.png", "carrot.png", "banana.png", "watermelon.png", "grapes.png"};
+    private String[] vegetableStringArray = {"tomato.png", "carrot.png", "banana.png", "watermelon.png", "grapes.png"};
 
-    public Vegetable(float x) {
+    //Passes in a float for instantiating the position of the vegetable and an integer i to get the
+    //image in the vegetable images array
+    public Vegetable(float x, int i) {
+        vegetable = new Texture(vegetableStringArray[i]);
+
         rand = new Random();
-        vegetable = new Texture(vegetableArray[rand.nextInt(vegStringCount)]);
-
         posVegetable = new Vector2(x, rand.nextInt(FLUCTUATION));
 
         //the + & - 5 gives a little leeway for the bubble to touch food image when they're not rectangular in shape

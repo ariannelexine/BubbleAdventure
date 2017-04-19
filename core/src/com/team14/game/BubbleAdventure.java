@@ -44,8 +44,7 @@ public class BubbleAdventure extends ApplicationAdapter {
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
-		img.dispose();
+		super.dispose();
 	}
 
 	public static void increment()
