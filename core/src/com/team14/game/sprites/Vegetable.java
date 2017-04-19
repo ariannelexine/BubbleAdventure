@@ -20,14 +20,17 @@ public class Vegetable {
     private Random rand;
     private boolean locked;//variable to lock out collision detection after the first has been recorded.
 
-    public Vegetable(float x) {
-        vegetable = new Texture("tomato.png");
+    private static final int vegStringCount = 5;
+    private String[] vegetableArray = {"tomato.png", "carrot.png", "banana.png", "watermelon.png", "grapes.png"};
 
+    public Vegetable(float x) {
         rand = new Random();
+        vegetable = new Texture(vegetableArray[rand.nextInt(vegStringCount)]);
 
         posVegetable = new Vector2(x, rand.nextInt(FLUCTUATION));
 
-        boundsVeg = new Rectangle(posVegetable.x, posVegetable.y, vegetable.getWidth(), vegetable.getHeight());
+        //the + & - 5 gives a little leeway for the bubble to touch food image when they're not rectangular in shape
+        boundsVeg = new Rectangle(posVegetable.x + 5, posVegetable.y - 5, vegetable.getWidth(), vegetable.getHeight());
 
         locked = false;
     }
@@ -43,7 +46,7 @@ public class Vegetable {
 
     public void reposition(float x){
         posVegetable.set(x, rand.nextInt(FLUCTUATION));
-        boundsVeg.setPosition(posVegetable.x, posVegetable.y);
+        boundsVeg.setPosition(posVegetable.x + 5, posVegetable.y - 5);
     }
 
     public boolean collides(Rectangle player){

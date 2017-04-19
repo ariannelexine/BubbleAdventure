@@ -19,6 +19,7 @@ public class JunkFood {
     private Rectangle boundsJunk;
     private Random rand;
 
+
     public JunkFood(float x) {
         junk = new Texture("cupcake.png");
 
@@ -45,5 +46,9 @@ public class JunkFood {
 
     public boolean collides(Rectangle player){
         return player.overlaps(boundsJunk);
+    }
+
+    public void dispose() {
+        junk.dispose();
     }
 }

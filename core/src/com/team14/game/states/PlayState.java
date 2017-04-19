@@ -7,9 +7,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.team14.game.BubbleAdventure;
+import com.team14.game.sprites.BottomObstacle;
 import com.team14.game.sprites.Bubble;
 import com.team14.game.sprites.JunkFood;
-import com.team14.game.sprites.Obstacle;
+import com.team14.game.sprites.TopObstacle;
 import com.team14.game.sprites.Vegetable;
 
 /**
@@ -18,13 +19,17 @@ import com.team14.game.sprites.Vegetable;
 
 public class PlayState extends State {
     private static final int VEGETABLE_SPACING = 150; //space between each vegetable
-    private static final int VEGETABLE_COUNT = 4;
+    private static final int VEGETABLE_COUNT = 10;
     private static final int JUNK_COUNT = 3;
-    private static final int JUNK_SPACING = 275;
+    private static final int JUNK_SPACING = 150;
 
+    private static final int OBSTACLE_SPACING = 200;
     private static final int OBSTACLE_COUNT = 1;
     //keeps track of whether or not the last state of the character was large or not. Used to determine whether score increments
     private boolean wasBig = false;
+
+    private boolean gameover;
+    private Texture gameoverImg;
 
 
     private Bubble bubble;
@@ -32,7 +37,8 @@ public class PlayState extends State {
 
     private Array<Vegetable> vegetables;
     private Array<JunkFood> junkFoods;
-    private Array<Obstacle> obstacles;
+    private Array<TopObstacle> topObstacles;
+    private Array<BottomObstacle> bottomObstacles;
 
     private String scoreString;
     private BitmapFont scoreFont;
@@ -44,10 +50,10 @@ public class PlayState extends State {
         bubble = new Bubble(50, 150);
         cam.setToOrtho(false, BubbleAdventure.WIDTH / 2, BubbleAdventure.HEIGHT / 2); //sets view on screen to a certain part of Game World
         bg = new Texture("bg1.jpg");
+        gameoverImg = new Texture("GameOver.png");
 
+        // this part only instantiates the first vegetables, the rest are reused and repositioned in update
         vegetables = new Array<Vegetable>();
-
-        //runs once??????
         for(int i = 1; i <= VEGETABLE_COUNT; i++){
             vegetables.add(new Vegetable(i * (VEGETABLE_SPACING + Vegetable.VEGETABLE_WIDTH) + BubbleAdventure.WIDTH / 2));
         }
@@ -58,16 +64,25 @@ public class PlayState extends State {
             junkFoods.add(new JunkFood(i * (JUNK_SPACING + JunkFood.JF_WIDTH) + BubbleAdventure.WIDTH / 2));
         }
 
-        obstacles = new Array<Obstacle>();
+        topObstacles= new Array<TopObstacle>();
 
         // this part only instantiates the first obstacle, the rest are done in reposition
         for(int i = 1; i <= OBSTACLE_COUNT; i++){
-            obstacles.add(new Obstacle(i * Obstacle.OBSTACLE_WIDTH));
+            topObstacles.add(new TopObstacle(i * (OBSTACLE_SPACING + TopObstacle.OBSTACLE_WIDTH)));
+        }
+
+        bottomObstacles= new Array<BottomObstacle>();
+
+        // this part only instantiates the first obstacle, the rest are done in reposition
+        for(int i = 1; i <= OBSTACLE_COUNT; i++){
+            bottomObstacles.add(new BottomObstacle(i * BottomObstacle.OBSTACLE_WIDTH));
         }
 
         //construct score string and font
         scoreString = "Score: 0";
         scoreFont = new BitmapFont();
+
+        gameover = false;
 
 
     }
@@ -75,7 +90,12 @@ public class PlayState extends State {
     @Override
     protected void handleInput() {
         if(Gdx.input.justTouched()){
-            bubble.jump();
+            if(gameover) {
+                BubbleAdventure.resetScore();//reset score to 0 before returning
+                gsm.set(new StartState(gsm));
+            }
+            else
+                bubble.jump();
         }
     }
 
@@ -99,8 +119,6 @@ public class PlayState extends State {
                 bubble.shrink((int) bubble.getPosition().x,(int)bubble.getPosition().y);
                 wasBig = false;//last state updated for character
             }
-
-
         }
 
         for(JunkFood junk : junkFoods){
@@ -111,22 +129,31 @@ public class PlayState extends State {
                 bubble.grow((int) bubble.getPosition().x, (int) bubble.getPosition().y);
                 wasBig = true;//state of the character has changed. will not be able to score until small again
             }
+        }
+
+
+        for(TopObstacle topObstacle : topObstacles) {
+            if(cam.position.x - (cam.viewportWidth / 2) > topObstacle.getPosTop().x + topObstacle.getTopObstacle().getWidth())
+                topObstacle.reposition(topObstacle.getPosTop().x + ((TopObstacle.OBSTACLE_WIDTH + OBSTACLE_SPACING) * OBSTACLE_COUNT));
+
+            if(topObstacle.collides(bubble.getBounds())) {
+                bubble.colliding = true;
+                gameover = true;
+            }
 
         }
 
 
-        for(Obstacle obstacle : obstacles){
-            if(cam.position.x - (cam.viewportWidth / 2) > obstacle.getPosSign().x + obstacle.getSign().getWidth())
-                obstacle.reposition(obstacle.getPosSign().x + ((Obstacle.OBSTACLE_WIDTH) * OBSTACLE_COUNT));
+        for(BottomObstacle bottomObstacle : bottomObstacles) {
+            if(cam.position.x - (cam.viewportWidth / 2) > bottomObstacle.getPosBottom().x + bottomObstacle.getBottomObstacle().getWidth())
+                bottomObstacle.reposition(bottomObstacle.getPosBottom().x + ((BottomObstacle.OBSTACLE_WIDTH) * OBSTACLE_COUNT));
 
-            // if(cam.position.x - (cam.viewportWidth / 2) > obstacle.getPosCart().x + obstacle.getCart().getWidth())
-              // obstacle.reposition(obstacle.getPosCart().x + ((Obstacle.OBSTACLE_WIDTH) * OBSTACLE_COUNT));
-
-            if(obstacle.collides(bubble.getBounds()))
-                gsm.set(new GameOverState(gsm));
+            if(bottomObstacle.collides(bubble.getBounds())) {
+                bubble.colliding = true;
+                gameover = true;
+            }
 
         }
-
 
         cam.update();
     }
@@ -150,12 +177,16 @@ public class PlayState extends State {
             sb.draw(junk.getJunk(), junk.getPosJunk().x, junk.getPosJunk().y);
         }
 
-
-
-        for(Obstacle obstacle : obstacles) {
-            sb.draw(obstacle.getSign(),obstacle.getPosSign().x, obstacle.getPosSign().y);
-           // sb.draw(obstacle.getCart(),obstacle.getPosCart().x, obstacle.getPosCart().y);
+        for(TopObstacle topObstacle : topObstacles) {
+            sb.draw(topObstacle.getTopObstacle(), topObstacle.getPosTop().x, topObstacle.getPosTop().y);
         }
+
+        for(BottomObstacle bottomObstacle : bottomObstacles) {
+            sb.draw(bottomObstacle.getBottomObstacle(), bottomObstacle.getPosBottom().x, bottomObstacle.getPosBottom().y);
+        }
+
+        if(gameover)
+            sb.draw(gameoverImg, cam.position.x - gameoverImg.getWidth() / 2, cam.position.y);
 
 
         sb.end();
@@ -163,6 +194,8 @@ public class PlayState extends State {
 
     @Override
     public void dispose() {
+        bg.dispose();
+        bubble.dispose();
 
     }
 }

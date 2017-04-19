@@ -18,6 +18,8 @@ public class Bubble {
 
     private Texture bubble;
 
+    public boolean colliding;
+
     public Bubble(int x, int y){
         position = new Vector3(x, y, 0); //starting position of bubble
         velocity = new Vector3(0, 0, 0); //starting not moving
@@ -25,6 +27,7 @@ public class Bubble {
         bubble = new Texture("SmallBubble.png");
 
         bounds = new Rectangle(x, y, bubble.getWidth(),bubble.getHeight());
+        colliding = false;
     }
 
     //send delta time to bubble class and allow it to do the math to reset position in gameworld
@@ -35,7 +38,10 @@ public class Bubble {
             velocity.add(0, GRAVITY, 0);
 
         velocity.scl(dt); //multiples everything by a delta time for position
-        position.add(MOVEMENT * dt,velocity.y, 0);
+        if(!colliding)
+            position.add(MOVEMENT * dt,velocity.y, 0);
+        else
+            bubble = new Texture("popped.png");
 
 
         //if the bubble is at the ground, add hops
@@ -81,5 +87,10 @@ public class Bubble {
     public void shrink(int x, int y){
         bubble = new Texture("SmallBubble.png");
         bounds = new Rectangle(x, y, bubble.getWidth(),bubble.getHeight());
+    }
+
+    public void dispose()
+    {
+        bubble.dispose();
     }
 }

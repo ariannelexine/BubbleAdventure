@@ -21,9 +21,6 @@ public class BubbleAdventure extends ApplicationAdapter {
 
 	//score variable
 	private static int scoreNum;
-
-
-
 	
 	@Override
 	public void create () {
