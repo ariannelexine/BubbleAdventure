@@ -21,9 +21,6 @@ public class BubbleAdventure extends ApplicationAdapter {
 
 	//score variable
 	private static int scoreNum;
-
-
-
 	
 	@Override
 	public void create () {
@@ -47,8 +44,7 @@ public class BubbleAdventure extends ApplicationAdapter {
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
-		img.dispose();
+		super.dispose();
 	}
 
 	public static void increment()

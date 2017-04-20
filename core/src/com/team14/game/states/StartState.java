@@ -48,6 +48,8 @@ public class StartState extends State {
 
     @Override
     public void dispose() {
-
+        startBubble.dispose();
+        bg.dispose();
+        tap.dispose();
     }
 }

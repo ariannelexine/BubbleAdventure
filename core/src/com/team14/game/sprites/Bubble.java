@@ -18,6 +18,8 @@ public class Bubble {
 
     private Texture bubble;
 
+    public boolean colliding;
+
     public Bubble(int x, int y){
         position = new Vector3(x, y, 0); //starting position of bubble
         velocity = new Vector3(0, 0, 0); //starting not moving
@@ -25,6 +27,7 @@ public class Bubble {
         bubble = new Texture("SmallBubble.png");
 
         bounds = new Rectangle(x, y, bubble.getWidth(),bubble.getHeight());
+        colliding = false;
     }
 
     //send delta time to bubble class and allow it to do the math to reset position in gameworld
@@ -35,7 +38,13 @@ public class Bubble {
             velocity.add(0, GRAVITY, 0);
 
         velocity.scl(dt); //multiples everything by a delta time for position
-        position.add(MOVEMENT * dt,velocity.y, 0);
+
+        //If colliding is still false, comtinue to move the bubble in the x direction
+        if(!colliding)
+            position.add(MOVEMENT * dt,velocity.y, 0);
+       //Else if the colliding has changed to true, stop the movement and replace the bubble with the popped image
+        else
+            bubble = new Texture("popped.png");
 
 
         //if the bubble is at the ground, add hops
@@ -44,12 +53,10 @@ public class Bubble {
             position.add(MOVEMENT * dt, velocity.y , 0);
         }
 
-
         //Game screen ceiling, doesn't let bubble go past top of the screen
         //Hard coded as of right now
-        if(position.y > BubbleAdventure.HEIGHT/2 - bubble.getHeight())// removed hard codded amouint 350-Anil
+        if(position.y > BubbleAdventure.HEIGHT/2 - bubble.getHeight())// removed hard codded amount 350-Anil
             velocity.y = -1;
-
 
         velocity.scl(1/dt);
         bounds.setPosition(position.x, position.y);
@@ -68,7 +75,6 @@ public class Bubble {
         velocity.y = 250;
     }
 
-
     public Rectangle getBounds(){
         return bounds;
     }
@@ -81,5 +87,10 @@ public class Bubble {
     public void shrink(int x, int y){
         bubble = new Texture("SmallBubble.png");
         bounds = new Rectangle(x, y, bubble.getWidth(),bubble.getHeight());
+    }
+
+    public void dispose()
+    {
+        bubble.dispose();
     }
 }
