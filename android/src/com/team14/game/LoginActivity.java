@@ -388,8 +388,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                     };
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(this.mContext);
-                    builder.setMessage(R.string.confirm_registry).setPositiveButton(R.string.yes, dialogClickListener)
+                    //Changed the r.string value entered before. Was grammatically incorrect
+                    builder.setMessage("Email not found. Do you want to create a new user with the email and password?").setPositiveButton(R.string.yes, dialogClickListener)
                             .setNegativeButton(R.string.no, dialogClickListener).show();
+                    //R.string.confirm_registry
                 }
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
