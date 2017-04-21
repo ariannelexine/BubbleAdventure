@@ -15,11 +15,15 @@ import com.team14.game.sprites.Vegetable;
 
 /**
  * Created by Arianne on 3/26/17.
+ *
+ *  TO DO figure out spacing issue with obstacles to keep them from overlapping or being too close to eachother
+ *  Make food disappear after collision
+ *  Dispose
  */
 
 public class PlayState extends State {
     private static final int VEGETABLE_SPACING = 250; //space between each vegetable
-    private static final int VEGETABLE_COUNT = 5; //one for every image
+    private static final int VEGETABLE_COUNT = 4; //one for every image
     private static final int JUNK_COUNT = 5;
     private static final int JUNK_SPACING = 150;
 
@@ -66,7 +70,7 @@ public class PlayState extends State {
         }
 
 
-  g      /* TO DO figure out spacing issue with obstacles to keep them from overlapping or being too close to eachother*/
+        /* TO DO figure out spacing issue with obstacles to keep them from overlapping or being too close to eachother*/
         topObstacles= new Array<TopObstacle>();
         for(int i = 1; i <= OBSTACLE_COUNT; i++) {
             topObstacles.add(new TopObstacle(i * (OBSTACLE_SPACING + TopObstacle.OBSTACLE_WIDTH)));
@@ -117,28 +121,29 @@ public class PlayState extends State {
 
             //if the rectangular bounds of vegetable overlap with the bubbles rectangular bounds
             if(vegetable.collides(bubble.getBounds())) {
+                //On collision, reposition the vegetable out of the camera view towards the left of the bubble
+                vegetable.reposition(cam.position.x - cam.viewportWidth);
                 //if character wasn't big previously gains points
                 if(!wasBig){
                     BubbleAdventure.increment();
                     scoreString = "Score: " + BubbleAdventure.getScore();//update string with now score value
                 }
-
                 bubble.shrink((int) bubble.getPosition().x,(int)bubble.getPosition().y);
                 wasBig = false;//last state updated for character
             }
         }
 
         for(JunkFood junk : junkFoods) {
-            if(cam.position.x - (cam.viewportWidth / 2) > junk.getPosJunk().x + junk.getJunk().getWidth())
+            if(cam.position.x - (cam.viewportWidth / 2) > junk.getPosJunk().x + junk.getJunk().getWidth()) {
                 junk.reposition(junk.getPosJunk().x + ((JunkFood.JF_WIDTH + JUNK_SPACING) * JUNK_COUNT));
+            }
 
             if(junk.collides(bubble.getBounds())) {
                 bubble.grow((int) bubble.getPosition().x, (int) bubble.getPosition().y);
                 wasBig = true;//state of the character has changed. will not be able to score until small again
+                junk.reposition(cam.position.x - cam.viewportWidth);
             }
         }
-
-
 
         /* TO DO randomize obstacles so that they're not always in the same pattern */
         for(TopObstacle topObstacle : topObstacles) {
@@ -171,6 +176,7 @@ public class PlayState extends State {
         sb.begin();
         sb.draw(bg, cam.position.x - (cam.viewportWidth / 2), 0); //positions background picture to fit phone screen
         sb.draw(bubble.getTexture(), bubble.getPosition().x, bubble.getPosition().y);
+
 
         /*Rendering score output*/
         scoreFont.setColor(Color.GOLD);//can also input rgb values

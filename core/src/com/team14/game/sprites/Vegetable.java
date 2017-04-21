@@ -21,7 +21,7 @@ public class Vegetable {
     private Random rand;
     private boolean locked;//variable to lock out collision detection after the first has been recorded.
 
-    private String[] vegetableStringArray = {"tomato.png", "carrot.png", "banana.png", "watermelon.png", "grapes.png"};
+    private String[] vegetableStringArray = {"tomato.png", "carrot.png", "watermelon.png", "grapes.png"};
 
     //Passes in a float for instantiating the position of the vegetable and an integer i to get the
     //image in the vegetable images array
