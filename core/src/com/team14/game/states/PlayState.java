@@ -66,7 +66,7 @@ public class PlayState extends State {
         }
 
 
-  g      /* TO DO figure out spacing issue with obstacles to keep them from overlapping or being too close to eachother*/
+        /* TO DO figure out spacing issue with obstacles to keep them from overlapping or being too close to eachother*/
         topObstacles= new Array<TopObstacle>();
         for(int i = 1; i <= OBSTACLE_COUNT; i++) {
             topObstacles.add(new TopObstacle(i * (OBSTACLE_SPACING + TopObstacle.OBSTACLE_WIDTH)));
