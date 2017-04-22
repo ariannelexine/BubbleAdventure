@@ -71,7 +71,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private View mLoginFormView;
     private User myUser;
 
-    @Override
+    public void OnClickExit (View v){
+        System.exit(0);
+    }
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
