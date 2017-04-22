@@ -190,8 +190,9 @@ public class PlayState extends State {
             sb.draw(bottomObstacle.getBottomObstacle(), bottomObstacle.getPosBottom().x, bottomObstacle.getPosBottom().y);
         }
 
-        if(gameover)
+        if(gameover) {
             sb.draw(gameoverImg, cam.position.x - gameoverImg.getWidth() / 2, cam.position.y);
+        }
 
         sb.end();
     }
@@ -203,4 +204,5 @@ public class PlayState extends State {
         bubble.dispose();
 
     }
+
 }

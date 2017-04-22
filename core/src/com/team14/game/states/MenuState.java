@@ -1,7 +1,10 @@
 package com.team14.game.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.team14.game.BubbleAdventure;
 
@@ -12,12 +15,17 @@ import com.team14.game.BubbleAdventure;
 public class MenuState extends State{
     private Texture background;
     private Texture playBtn;
+    private String scoreString;
+    private BitmapFont scoreFont;
 
     public MenuState(GameStateManager gsm) {
         super(gsm);
         cam.setToOrtho(false, BubbleAdventure.WIDTH / 2, BubbleAdventure.HEIGHT / 2);
         background = new Texture("bg.jpg");
         playBtn = new Texture("playbtn.png");
+        scoreString = "Score: ";// + pref.getInteger("highscore", 0);
+        scoreFont = new BitmapFont();
+
     }
 
     @Override
@@ -45,6 +53,9 @@ public class MenuState extends State{
         sb.draw(background, 0, 0);//draw(image to draw, x-pos, y-pos, width of screen, height)
         //0,0 = bottom left hand of screen
         sb.draw(playBtn, cam.position.x = playBtn.getWidth() / 2, cam.position.y); //centers button
+        scoreFont.setColor(Color.GOLD);//can also input rgb values
+        scoreFont.draw(sb, scoreString, cam.position.x - cam.viewportWidth/2, cam.viewportHeight);
+        scoreFont.setUseIntegerPositions(false);//fixes shaking of score display
         sb.end(); //close
     }
 
@@ -53,5 +64,8 @@ public class MenuState extends State{
     public void dispose() {
         background.dispose();
         playBtn.dispose();
+
     }
+
+
 }

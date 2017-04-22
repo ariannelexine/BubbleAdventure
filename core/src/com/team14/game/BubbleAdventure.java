@@ -21,6 +21,8 @@ public class BubbleAdventure extends ApplicationAdapter {
 
 	//score variable
 	private static int scoreNum;
+
+
 	
 	@Override
 	public void create () {
@@ -29,6 +31,8 @@ public class BubbleAdventure extends ApplicationAdapter {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		gsm.push(new MenuState(gsm));
 		scoreNum = 0;
+
+
 
 	}
 
