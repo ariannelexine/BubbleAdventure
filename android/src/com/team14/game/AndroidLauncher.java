@@ -6,10 +6,14 @@ import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.team14.game.BubbleAdventure;
+
 
 public class AndroidLauncher extends AndroidApplication {
+<<<<<<< HEAD
 	SharedPreferences pref;
+=======
+
+>>>>>>> 68f0fd0f5e16f9f62fa0c2c0c16b27012b3c9e92
 
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
@@ -23,3 +27,4 @@ public class AndroidLauncher extends AndroidApplication {
 		initialize(new BubbleAdventure(), config);
 	}
 }
+
