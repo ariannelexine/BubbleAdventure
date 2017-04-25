@@ -18,7 +18,7 @@ public abstract class State {
     protected OrthographicCamera cam; //each state needs a camera to locate a position in the game world
     protected Vector3 mouse; //a pointer, vector3 = xyz coordinate
     protected GameStateManager gsm; //way to manage states on top of each other (ex. pause state on top of game state)
-    protected Preferences pref;
+    //protected Preferences pref;
 
     //constructor
     protected State(GameStateManager gsm) {
@@ -32,6 +32,6 @@ public abstract class State {
     public abstract void render(SpriteBatch sb); //sb - container for everything we need to render to screen (textures, images)
     public abstract void dispose(); //used to avoid memory leaks
 
-    //public abstract
+
 
 }

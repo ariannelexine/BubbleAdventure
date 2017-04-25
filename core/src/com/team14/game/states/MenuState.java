@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.team14.game.BubbleAdventure;
+import com.team14.game.sprites.Bubble;
+
 
 /**
  * Created by Arianne on 3/26/17.
@@ -17,13 +19,20 @@ public class MenuState extends State{
     private Texture playBtn;
     private String scoreString;
     private BitmapFont scoreFont;
+    private static Preferences pref;
 
     public MenuState(GameStateManager gsm) {
         super(gsm);
         cam.setToOrtho(false, BubbleAdventure.WIDTH / 2, BubbleAdventure.HEIGHT / 2);
         background = new Texture("bg.jpg");
         playBtn = new Texture("playbtn.png");
-        scoreString = "Score: ";// + pref.getInteger("highscore", 0);
+        pref = Gdx.app.getPreferences("Bubble");
+        if(!(pref.contains("highscore"))) {
+            pref.putInteger("highscore", 0);
+            pref.flush();
+        }
+        //scoreString = "Score: " + pref.getInteger("highscore");
+        scoreString = "High Score: " + BubbleAdventure.getPrefScore();
         scoreFont = new BitmapFont();
 
     }
@@ -32,12 +41,13 @@ public class MenuState extends State{
     public void handleInput() {
         //if user finger taps, mouse clicks etc
         if(Gdx.input.justTouched()){
-            gsm.set(new StartState(gsm));
+            gsm.push(new StartState(gsm));
         }
     }
 
     @Override
     public void update(float dt) {
+        scoreString = "High Score: " + BubbleAdventure.getPrefScore();
         handleInput(); //by putting in update, will always be checking to see if our user is doing anything
     }
 
@@ -53,7 +63,7 @@ public class MenuState extends State{
         //0,0 = bottom left hand of screen
         sb.draw(playBtn, cam.position.x = playBtn.getWidth() / 2, cam.position.y); //centers button
         scoreFont.setColor(Color.GOLD);//can also input rgb values
-        scoreFont.draw(sb, scoreString, cam.position.x - cam.viewportWidth/2, cam.viewportHeight);
+        scoreFont.draw(sb, scoreString, cam.position.x, cam.position.y);
         scoreFont.setUseIntegerPositions(false);//fixes shaking of score display
         sb.end(); //close
     }

@@ -213,7 +213,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
-        return email.contains("@");
+        //Added extra checks to validate email - Anil Parshad
+        return (email.contains("@") &&(email.contains(".com") || email.contains(".net")));
     }
 
     private boolean isPasswordValid(String password) {
@@ -359,7 +360,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 if (myUser.userId>0){
                     finish();
                     Intent myIntent = new Intent(LoginActivity.this,AndroidLauncher.class);
-                    LoginActivity.this.startActivity(myIntent);
+                    myIntent.putExtra("userId", myUser.userId);//added userID to intent - Anil
+                    LoginActivity.this.startActivity(myIntent);//passing intent to AndroidLauncher - Anil
                 } else {
                     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                         @Override
@@ -374,6 +376,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                                         Toast myToast = Toast.makeText(mContext,R.string.updatingReport, Toast.LENGTH_SHORT);
                                         myToast.show();
                                         Intent myIntent = new Intent(LoginActivity.this,AndroidLauncher.class);
+                                        myIntent.putExtra("userId", myUser.userId);//added userID to intent - Anil
                                         LoginActivity.this.startActivity(myIntent);
                                     } finally{
                                         if (dbTools!=null)

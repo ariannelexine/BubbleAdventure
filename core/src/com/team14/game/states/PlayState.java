@@ -87,20 +87,18 @@ public class PlayState extends State {
     @Override
     protected void handleInput() {
 
-        //If user touches the screen
-        if(Gdx.input.justTouched()) {
-
-            //If the bubble has collided with the obstacle, gameover will be set to true
-            //so when user touches screen, reset to the start state again and reset score
-            if(gameover) {
-                BubbleAdventure.resetScore();//reset score to 0 before returning
-                gsm.set(new StartState(gsm));
-            }
-
-            //if gameover is still false, bubble jumps
-            else
-                bubble.jump();
+        //so when user touches screen, reset to the start state again and reset score
+        if(gameover) {
+            //resets bubble's speed - Anil
+            bubble.reset();
+            gsm.set(new GameOverState(gsm));
         }
+
+        //if gameover is still false, bubble jumps
+        else
+            if(Gdx.input.justTouched())
+                bubble.jump();
+
     }
 
     @Override
@@ -120,7 +118,7 @@ public class PlayState extends State {
                 //if character wasn't big previously gains points
                 if(!wasBig){
                     BubbleAdventure.increment();
-                    scoreString = "Score: " + BubbleAdventure.getScore();//update string with now score value
+                    scoreString = "Score: " + BubbleAdventure.getScore();//update string with new score value
                 }
 
                 bubble.shrink((int) bubble.getPosition().x,(int)bubble.getPosition().y);
@@ -160,6 +158,7 @@ public class PlayState extends State {
             if(bottomObstacle.collides(bubble.getBounds())) {
                 bubble.colliding = true;
                 gameover = true;
+
             }
         }
         cam.update();
@@ -190,9 +189,10 @@ public class PlayState extends State {
             sb.draw(bottomObstacle.getBottomObstacle(), bottomObstacle.getPosBottom().x, bottomObstacle.getPosBottom().y);
         }
 
-        if(gameover) {
+        /*if(gameover) {
             sb.draw(gameoverImg, cam.position.x - gameoverImg.getWidth() / 2, cam.position.y);
-        }
+
+        }*/
 
         sb.end();
     }

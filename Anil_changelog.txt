@@ -30,4 +30,13 @@ To Do:
 
 -Display resulting score at GameOverState.
 
--Properly dispose of resources
+-Properly dispose of resources(complete Arianne)
+
+
+
+04/23/2017
+-High score is saved for each user
+
+-Bubble speeds up every 500 points to make the game more difficult
+
+-created GameOverState in order to handle options after game has stopped(Still needs work)
