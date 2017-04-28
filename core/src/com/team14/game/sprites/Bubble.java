@@ -22,6 +22,10 @@ public class Bubble {
 
     public boolean colliding;
 
+    public int MAX_SIZE = 2; //bubbles maximum size is 2 ranging from 0 - 2
+
+    private String[] BubbleStringArray = {"SmallBubble.png", "MediumBubble.png", "LargeBubble.png"};
+
     public Bubble(int x, int y){
         position = new Vector3(x, y, 0); //starting position of bubble
         velocity = new Vector3(0, 0, 0); //starting not moving
@@ -82,13 +86,13 @@ public class Bubble {
         return bounds;
     }
 
-    public void grow(int x, int y){
-        bubble = new Texture("BigBubble.png");
+    public void grow(int x, int y, int size){
+        bubble = new Texture(BubbleStringArray[size]);
         bounds = new Rectangle(x, y, bubble.getWidth(),bubble.getHeight());
     }
 
-    public void shrink(int x, int y){
-        bubble = new Texture("SmallBubble.png");
+    public void shrink(int x, int y, int size){
+        bubble = new Texture(BubbleStringArray[size]);
         bounds = new Rectangle(x, y, bubble.getWidth(),bubble.getHeight());
     }
 

@@ -50,7 +50,7 @@ public class BubbleAdventure extends ApplicationAdapter {
 	public static void increment()
 	{
 		scoreNum += 100;
-		System.out.println(scoreNum);
+		//System.out.println(scoreNum);
 	}
 
 	public static int getScore(){return scoreNum;}

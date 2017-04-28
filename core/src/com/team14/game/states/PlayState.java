@@ -24,15 +24,16 @@ import com.team14.game.sprites.Vegetable;
  */
 
 public class PlayState extends State {
-    private static final int VEGETABLE_SPACING = 250; //space between each vegetable
+    private static final int VEGETABLE_SPACING = 150; //space between each vegetable
     private static final int VEGETABLE_COUNT = 4; //one for every image
     private static final int JUNK_COUNT = 5;
-    private static final int JUNK_SPACING = 150;
+    private static final int JUNK_SPACING = 200;
 
     private static final int OBSTACLE_SPACING = 300;
     private static final int OBSTACLE_COUNT = 2;
     //keeps track of whether or not the last state of the character was large or not. Used to determine whether score increments
     private boolean wasBig = false;
+    private int size; //Bubbles current size
 
     //Determines if the bubble has collided with an obstacle for MOVEMENT and popped image
     private boolean gameover;
@@ -58,6 +59,7 @@ public class PlayState extends State {
         super(gsm);
 
         bubble = new Bubble(50, 150);
+        size = 0;
         cam.setToOrtho(false, BubbleAdventure.WIDTH / 2, BubbleAdventure.HEIGHT / 2); //sets view on screen to a certain part of Game World
         bg = new Texture("bg1.jpg");
         gameoverImg = new Texture("GameOver.png");
@@ -139,7 +141,10 @@ public class PlayState extends State {
                     BubbleAdventure.increment();
                     scoreString = "Score: " + BubbleAdventure.getScore();//update string with now score value
                 }
-                bubble.shrink((int) bubble.getPosition().x,(int)bubble.getPosition().y);
+                if(size != 0) {
+                    size--;
+                    bubble.shrink((int) bubble.getPosition().x, (int) bubble.getPosition().y, size);
+                }
                 wasBig = false;//last state updated for character
             }
         }
@@ -150,9 +155,18 @@ public class PlayState extends State {
             }
 
             if(junk.collides(bubble.getBounds())) {
-                bubble.grow((int) bubble.getPosition().x, (int) bubble.getPosition().y);
-                wasBig = true;//state of the character has changed. will not be able to score until small again
-                junk.reposition(cam.position.x - cam.viewportWidth);
+                if(size != bubble.MAX_SIZE) {
+                    junk.reposition(cam.position.x - cam.viewportWidth);
+                    size++;
+                    bubble.grow((int) bubble.getPosition().x, (int) bubble.getPosition().y, size);
+                    wasBig = true;//state of the character has changed. will not be able to score until small again
+
+                }
+                else{
+                    junk.reposition(cam.position.x - cam.viewportWidth);
+                    bubble.colliding = true;
+                    gameover = true;
+                }
             }
         }
 

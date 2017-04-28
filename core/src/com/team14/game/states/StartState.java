@@ -25,7 +25,7 @@ public class StartState extends State {
         bg = new Texture("bg1.jpg");
         tap = new Texture("Tap.png");
         descString = "BUBBA "+ " EATS VEGETABLES TO \nACCUMULATE POINTS. EATING \nJUNK FOOD WILL MAKE HIM \nFLUFFY AND " +
-                "TO MUCH FOOD \nWILL MAKE HIM POP. OH AND \nWATCH OUT FOR OBSTACLES!\n";
+                "TOO MUCH FOOD \nWILL MAKE HIM POP. OH AND \nWATCH OUT FOR OBSTACLES!\n";
         description = new BitmapFont();
         description.getData().setScale(0.8f, 0.8f);//resize text by scaling it
         startBubble = new Texture("SmallBubble.png");
