@@ -19,6 +19,7 @@ public class Bubble {
     private Rectangle bounds;
     private Sound tap;
     private Texture bubble;
+    public static float bubbleVolume = 1f;
 
     public boolean colliding;
 
@@ -79,7 +80,7 @@ public class Bubble {
 
     public void jump(){
         velocity.y = 250;
-        tap.play(1.0f);
+        tap.play(bubbleVolume);
     }
 
     public Rectangle getBounds(){

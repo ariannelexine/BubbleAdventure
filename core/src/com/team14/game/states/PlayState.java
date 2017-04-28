@@ -45,6 +45,7 @@ public class PlayState extends State {
 
     private Music music;
     private Sound over;
+    public static float musicControl = 1f;
 
     private Array<Vegetable> vegetables;
     private Array<JunkFood> junkFoods;
@@ -67,7 +68,7 @@ public class PlayState extends State {
         music = Gdx.audio.newMusic(Gdx.files.internal("game_2.wav"));
         over = Gdx.audio.newSound(Gdx.files.internal("game_over.wav"));
         music.setLooping(true);
-        music.setVolume(1.0f);
+        music.setVolume(musicControl);
         music.play();
 
         //Instantiates a vegetable for every vegetable image and reuses them in update()
@@ -225,7 +226,7 @@ public class PlayState extends State {
         if(gameover)
         {
             sb.draw(gameoverImg, cam.position.x - gameoverImg.getWidth() / 2, cam.position.y);
-            over.play(1.0f);
+            over.play(musicControl);
 
         }
 
