@@ -1,5 +1,7 @@
 package com.team14.game.sprites;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
@@ -15,7 +17,7 @@ public class Bubble {
     private Vector3 position;
     private Vector3 velocity;
     private Rectangle bounds;
-
+    private Sound tap;
     private Texture bubble;
 
     public boolean colliding;
@@ -23,7 +25,7 @@ public class Bubble {
     public Bubble(int x, int y){
         position = new Vector3(x, y, 0); //starting position of bubble
         velocity = new Vector3(0, 0, 0); //starting not moving
-
+        tap = Gdx.audio.newSound(Gdx.files.internal("tap.ogg"));
         bubble = new Texture("SmallBubble.png");
 
         bounds = new Rectangle(x, y, bubble.getWidth(),bubble.getHeight());
@@ -73,6 +75,7 @@ public class Bubble {
 
     public void jump(){
         velocity.y = 250;
+        tap.play(1.0f);
     }
 
     public Rectangle getBounds(){
@@ -92,5 +95,7 @@ public class Bubble {
     public void dispose()
     {
         bubble.dispose();
+        tap.dispose();
+
     }
 }

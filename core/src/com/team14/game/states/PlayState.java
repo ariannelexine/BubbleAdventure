@@ -1,6 +1,8 @@
 package com.team14.game.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -40,6 +42,9 @@ public class PlayState extends State {
     private Bubble bubble;
     private Texture bg;
 
+    private Music music;
+    private Sound over;
+
     private Array<Vegetable> vegetables;
     private Array<JunkFood> junkFoods;
     private Array<TopObstacle> topObstacles;
@@ -56,6 +61,12 @@ public class PlayState extends State {
         cam.setToOrtho(false, BubbleAdventure.WIDTH / 2, BubbleAdventure.HEIGHT / 2); //sets view on screen to a certain part of Game World
         bg = new Texture("bg1.jpg");
         gameoverImg = new Texture("GameOver.png");
+
+        music = Gdx.audio.newMusic(Gdx.files.internal("game_2.wav"));
+        over = Gdx.audio.newSound(Gdx.files.internal("game_over.wav"));
+        music.setLooping(true);
+        music.setVolume(1.0f);
+        music.play();
 
         //Instantiates a vegetable for every vegetable image and reuses them in update()
         //incrementing through each i allows each vegetable in the array to be instantiated
@@ -165,6 +176,7 @@ public class PlayState extends State {
             if(bottomObstacle.collides(bubble.getBounds())) {
                 bubble.colliding = true;
                 gameover = true;
+
             }
         }
         cam.update();
@@ -197,7 +209,12 @@ public class PlayState extends State {
         }
 
         if(gameover)
+        {
             sb.draw(gameoverImg, cam.position.x - gameoverImg.getWidth() / 2, cam.position.y);
+            over.play(1.0f);
+
+        }
+
 
         sb.end();
     }
@@ -207,6 +224,8 @@ public class PlayState extends State {
         /* TO DO dispose everything */
         bg.dispose();
         bubble.dispose();
+        music.dispose();
+        over.dispose();
 
     }
 }

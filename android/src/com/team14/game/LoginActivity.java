@@ -57,8 +57,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      * TODO: remove after connecting to a real authentication system.
      */
     //private static final String[] DUMMY_CREDENTIALS = new String[]{
-           // "foo@example.com:hello", "bar@example.com:world"
-   // };
+    // "foo@example.com:hello", "bar@example.com:world"
+    // };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -71,7 +71,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private View mLoginFormView;
     private User myUser;
 
-    @Override
+    //private Music start_music;
+
+    public void OnClickExit (View v){
+        System.exit(0);
+    }
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -101,6 +105,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        //start_music = Gdx.audio.newMusic(Gdx.files.internal("gametone.wav"));
+        //start_music.setLooping(true);
+        //start_music.setVolume(1.0f);
+        //start_music.play();
     }
 
     /*private void populateAutoComplete() {
@@ -211,7 +220,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
-        return email.contains("@");
+        //Added extra checks to validate email - Anil Parshad
+        return (email.contains("@") &&(email.contains(".com") || email.contains(".edu") || email.contains(".net")));
     }
 
     private boolean isPasswordValid(String password) {
@@ -357,7 +367,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 if (myUser.userId>0){
                     finish();
                     Intent myIntent = new Intent(LoginActivity.this,AndroidLauncher.class);
-                    LoginActivity.this.startActivity(myIntent);
+                    myIntent.putExtra("userId", myUser.userId);//added userID to intent - Anil
+                    LoginActivity.this.startActivity(myIntent);//passing intent to AndroidLauncher - Anil
                 } else {
                     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                         @Override
@@ -372,10 +383,12 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                                         Toast myToast = Toast.makeText(mContext,R.string.updatingReport, Toast.LENGTH_SHORT);
                                         myToast.show();
                                         Intent myIntent = new Intent(LoginActivity.this,AndroidLauncher.class);
+                                        myIntent.putExtra("userId", myUser.userId);//added userID to intent - Anil
                                         LoginActivity.this.startActivity(myIntent);
                                     } finally{
                                         if (dbTools!=null)
                                             dbTools.close();
+                                            //start_music.dispose();
                                     }
                                     break;
 
@@ -404,9 +417,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             mAuthTask = null;
             showProgress(false);
         }
+
     }
-
-
-
 }
 
