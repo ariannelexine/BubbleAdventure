@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Timer;
 import com.team14.game.BubbleAdventure;
 import com.team14.game.sprites.BottomObstacle;
 import com.team14.game.sprites.Bubble;
@@ -35,6 +36,8 @@ public class PlayState extends State {
     private static final int OBSTACLE_COUNT = 2;
     //keeps track of whether or not the last state of the character was large or not. Used to determine whether score increments
     private boolean wasBig = false;
+    private double delay = 0.5;//delay timer for sound in seconds.
+
     private int size; //Bubbles current size
 
     //Determines if the bubble has collided with an obstacle for MOVEMENT and popped image
@@ -47,6 +50,9 @@ public class PlayState extends State {
 
     private Music music;
     private Sound over;
+    private Sound blop;
+    private Sound healthPickup;
+    private Sound junkPickup;
     public static float musicControl = 1f;
 
     private Array<Vegetable> vegetables;
@@ -80,6 +86,9 @@ public class PlayState extends State {
 
         music = Gdx.audio.newMusic(Gdx.files.internal("game_2.wav"));
         over = Gdx.audio.newSound(Gdx.files.internal("game_over.wav"));
+        blop = Gdx.audio.newSound(Gdx.files.internal("Blop.wav"));
+        junkPickup = Gdx.audio.newSound(Gdx.files.internal("Powerup14.wav"));
+        healthPickup = Gdx.audio.newSound(Gdx.files.internal("Pickup_Coin4.wav"));
         music.setLooping(true);
         music.setVolume(musicControl);
         music.play();
@@ -158,7 +167,16 @@ public class PlayState extends State {
         //plays game over sound only once upon death. All items here only need to be updated once the game is over.
         if (gameover && (count == 0)){
             music.stop();
-            over.play(musicControl);
+            blop.play(musicControl);
+            /*delays the game over music so it doesn't play on top of popping souund(blop.wave).
+             *DO NOT CHANGE THE delay VALUE. Casting from double to float might lead to issues with other values.*/
+            Timer.schedule(new Timer.Task(){
+                @Override
+                public void run() {
+                    over.play(musicControl);
+                }
+            }, (float)delay);
+
             //over.dispose(); can dispose here but left it in our dispose method. Either way, shouldn't matter.
             //check and see if a new high score was reached. If so it will be stored in preferences
             BubbleAdventure.checkHighScore(BubbleAdventure.getScore());
@@ -186,6 +204,7 @@ public class PlayState extends State {
 
             if(topObstacle.collides(bubble.getBounds())) {
                 //System.out.printf("Collide\n");
+
                 bubble.colliding = true;
                 gameover = true;
             }
@@ -218,10 +237,12 @@ public class PlayState extends State {
 
             //if the rectangular bounds of vegetable overlap with the bubbles rectangular bounds
             if(vegetable.collides(bubble.getBounds())) {
+                healthPickup.play(musicControl);
                 //On collision, reposition the vegetable out of the camera view towards the left of the bubble
                 vegetable.reposition(cam.position.x - cam.viewportWidth, last_boundsTop, last_boundsBot, last_boundsJunk);
                 last_posJunk.set(vegetable.getPosVegetable());
                 last_boundsJunk.set(vegetable.getBoundsVeg());
+
                 //if character wasn't big previously gains points
                 if(!wasBig){
                     BubbleAdventure.increment();
@@ -243,6 +264,7 @@ public class PlayState extends State {
             }
 
             if(junk.collides(bubble.getBounds())) {
+                junkPickup.play(musicControl);
                 if(size != bubble.MAX_SIZE) {
                     junk.reposition(cam.position.x - cam.viewportWidth, last_boundsTop, last_boundsBot, last_boundsVeg);
                     size++;
@@ -251,6 +273,7 @@ public class PlayState extends State {
 
                 }
                 else{
+                    //blop.play();
                     junk.reposition(cam.position.x - cam.viewportWidth, last_boundsTop, last_boundsBot, last_boundsVeg);
                     bubble.colliding = true;
                     gameover = true;
@@ -306,6 +329,9 @@ public class PlayState extends State {
         bubble.dispose();
         music.dispose();
         over.dispose();
+        blop.dispose();
+        junkPickup.dispose();
+        healthPickup.dispose();
 
     }
 }

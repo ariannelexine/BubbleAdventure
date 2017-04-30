@@ -1,6 +1,7 @@
 package com.team14.game.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -33,6 +34,8 @@ public class MenuState extends State{
     private String scoreString;
     private BitmapFont scoreFont;
 
+    Sound blop;
+
     public MenuState(GameStateManager gsm) {
         super(gsm);
         cam.setToOrtho(false, BubbleAdventure.WIDTH / 2, BubbleAdventure.HEIGHT / 2);
@@ -49,6 +52,7 @@ public class MenuState extends State{
         musicOnBtnYPos = cam.position.y / 2;
         scoreString = "Your High Score: " + BubbleAdventure.getPrefScore();
         scoreFont = new BitmapFont();
+        blop = Gdx.audio.newSound(Gdx.files.internal("Blop.wav"));
     }
 
     @Override
@@ -67,6 +71,7 @@ public class MenuState extends State{
             // btn_height is the height of the texture (you can get it with texture.getHeight() or textureRegion.getRegionhHeight() if you have a texture region
             if(textureBoundsPlayBtn.contains(tmp.x,tmp.y))
             {
+                blop.play(PlayState.musicControl);
                 gsm.set(new StartState(gsm));
             }
             //toggles off for music by adjusting the volume
@@ -75,16 +80,17 @@ public class MenuState extends State{
                 //turn music off 0f
                 Bubble.bubbleVolume = 0f;
                 PlayState.musicControl = 0f;
-                gsm.set(new StartState(gsm));
+
 
             }
             //toggles on for music by adjusting the volume
             if(textureBoundsMusicOnBtn.contains(tmp.x,tmp.y))
             {
-                //turn music off 0f
+                //turn music on 1f - full volume
                 Bubble.bubbleVolume = 1f;
                 PlayState.musicControl = 1f;
-                gsm.set(new StartState(gsm));
+                blop.play(PlayState.musicControl);
+
 
             }
         }
@@ -123,5 +129,8 @@ public class MenuState extends State{
     public void dispose() {
         background.dispose();
         playBtn.dispose();
+        musicOffBtn.dispose();
+        musicOnBtn.dispose();
+        blop.dispose();
     }
 }
