@@ -1,7 +1,9 @@
 package com.team14.game.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.team14.game.BubbleAdventure;
 import com.badlogic.gdx.math.Vector3;
@@ -27,6 +29,10 @@ public class MenuState extends State{
     private float musicOnBtnXPos;
     private float musicOnBtnYPos;
 
+    //For displaying High Score
+    private String scoreString;
+    private BitmapFont scoreFont;
+
     public MenuState(GameStateManager gsm) {
         super(gsm);
         cam.setToOrtho(false, BubbleAdventure.WIDTH / 2, BubbleAdventure.HEIGHT / 2);
@@ -41,6 +47,8 @@ public class MenuState extends State{
         musicOnBtn = new Texture("musicOnBtn.png");
         musicOnBtnXPos = musicOnBtn.getWidth()/5 + musicOnBtn.getWidth();
         musicOnBtnYPos = cam.position.y / 2;
+        scoreString = "Your High Score: " + BubbleAdventure.getPrefScore();
+        scoreFont = new BitmapFont();
     }
 
     @Override
@@ -85,6 +93,8 @@ public class MenuState extends State{
 
     @Override
     public void update(float dt) {
+        //Below only needed here if we don't pop from the stack and just push a new state on top.
+        //scoreString = "High Score: " + BubbleAdventure.getPrefScore();
         handleInput(); //by putting in update, will always be checking to see if our user is doing anything
     }
 
@@ -101,6 +111,10 @@ public class MenuState extends State{
         sb.draw(playBtn, cam.position.x = playBtnXPos, playBtnYPos); //centers button
         sb.draw(musicOffBtn, cam.position.x = musicOffBtnXPos, musicOffBtnYPos);
         sb.draw(musicOnBtn, cam.position.x = musicOnBtnXPos, musicOnBtnYPos);
+        scoreFont.setColor(Color.GOLD);//can also input rgb values
+        scoreFont.draw(sb, scoreString, cam.position.x, BubbleAdventure.HEIGHT/2);
+        scoreFont.setUseIntegerPositions(false);//fixes shaking of score display
+
         sb.end(); //close
     }
 

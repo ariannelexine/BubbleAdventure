@@ -3,6 +3,7 @@ package com.team14.game.sprites;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.team14.game.BubbleAdventure;
 
 import java.util.Random;
 
@@ -36,6 +37,8 @@ public class BottomObstacle {
         return posBottom;
     }
 
+    public Rectangle getBoundsBottom() {return boundsBottom;}
+
 
 
     public boolean collides(Rectangle player) {
@@ -43,11 +46,19 @@ public class BottomObstacle {
     }
 
 
-    public void reposition(float x) {
+    public void reposition(float x, Rectangle last) {
         rand = new Random();
-        int randomNum = rand.nextInt(500 + 1 - 125) + 125;
+        int randomNum = rand.nextInt(((BubbleAdventure.WIDTH * 2)+ 1 - bottomObstacle.getWidth()) + bottomObstacle.getWidth());
         posBottom.set(x + randomNum, 0);
         boundsBottom.setPosition(posBottom.x + 10, posBottom.y - 10);
+
+        //If the reposition overlaps the last known reposition boundry adjust be moving the obstacle by its width
+        while(boundsBottom.overlaps(last))
+        {
+            posBottom.set(x + randomNum + bottomObstacle.getWidth(), 0);
+            boundsBottom.setPosition(posBottom.x + 10, posBottom.y - 10);
+            x+=randomNum;
+        }
 
     }
 

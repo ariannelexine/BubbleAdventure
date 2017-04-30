@@ -18,6 +18,8 @@ public class JunkFood {
     private Vector2 posJunk;
     private Rectangle boundsJunk;
     private Random rand;
+    boolean done;
+    int count;
 
     private String[] JFStringArray = {"cupcake.png", "cookie.png", "donut.png", "burger.png", "pizza.png"};
 
@@ -41,9 +43,45 @@ public class JunkFood {
         return posJunk;
     }
 
-    public void reposition(float x){
+    public Rectangle getBoundsJunk() {return boundsJunk;}
+
+    public void reposition(float x, Rectangle top, Rectangle bot, Rectangle veg){
+        done = false;
+        count = 0;
         posJunk.set(x, rand.nextInt(FLUCTUATION));
         boundsJunk.setPosition(posJunk.x, posJunk.y);
+        while(!done){
+            if(boundsJunk.contains(top))
+            {
+                posJunk.set(x, posJunk.y - top.getHeight() - junk.getHeight());
+                boundsJunk.setPosition(posJunk.x, posJunk.y);
+                done = false;
+                count++;
+            }
+
+            if(boundsJunk.contains(bot))
+            {
+                posJunk.set(x, posJunk.y + bot.getHeight() + junk.getHeight());
+                boundsJunk.setPosition(posJunk.x, posJunk.y);
+                done = false;
+                count++;
+            }
+
+            if(boundsJunk.contains(veg))
+            {
+                posJunk.set(x + veg.getWidth()*2, posJunk.y);
+                boundsJunk.setPosition(posJunk.x, posJunk.y);
+                done = false;
+                count++;
+            }
+
+            if(count == 0)
+                done = true;
+
+            //resets count for next loop if needed
+            count = 0;
+
+        }
     }
 
     public boolean collides(Rectangle player){

@@ -13,13 +13,14 @@ import com.team14.game.BubbleAdventure;
 
 public class Bubble {
     private static final int GRAVITY = -10;
-    private static final int MOVEMENT = 100; //speed of food/bubble in x direction.
+    private static int MOVEMENT = 100; //speed of food/bubble in x direction.
     private Vector3 position;
     private Vector3 velocity;
     private Rectangle bounds;
     private Sound tap;
     private Texture bubble;
     public static float bubbleVolume = 1f;
+    private static int prev_score = 0;
 
     public boolean colliding;
 
@@ -39,6 +40,11 @@ public class Bubble {
 
     //send delta time to bubble class and allow it to do the math to reset position in gameworld
     public void update(float dt){
+        //Increases movement speed every time score is increased by 500
+        if(BubbleAdventure.getScore() == prev_score + 500) {
+            MOVEMENT+=20;
+            prev_score = BubbleAdventure.getScore();
+        }
         //if you don't float you fall
         //if the bubble isn't already on the ground, add gravity
         if(position.y > 0)
@@ -46,7 +52,7 @@ public class Bubble {
 
         velocity.scl(dt); //multiples everything by a delta time for position
 
-        //If colliding is still false, comtinue to move the bubble in the x direction
+        //If colliding is still false, continue to move the bubble in the x direction
         if(!colliding)
             position.add(MOVEMENT * dt,velocity.y, 0);
        //Else if the colliding has changed to true, stop the movement and replace the bubble with the popped image
@@ -95,6 +101,11 @@ public class Bubble {
     public void shrink(int x, int y, int size){
         bubble = new Texture(BubbleStringArray[size]);
         bounds = new Rectangle(x, y, bubble.getWidth(),bubble.getHeight());
+    }
+
+    public void reset(){
+        MOVEMENT = 100;
+        prev_score = 0;
     }
 
     public void dispose()

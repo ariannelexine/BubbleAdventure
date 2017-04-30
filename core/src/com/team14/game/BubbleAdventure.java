@@ -2,6 +2,7 @@ package com.team14.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -21,12 +22,28 @@ public class BubbleAdventure extends ApplicationAdapter {
 
 	//score variable
 	private static int scoreNum;
+
+	/* variables needed for preferences*/
+	private static Preferences pref;
+	private long userId;
+	String filename;
+
+	/*Overloaded constructor to pass the user's ID for the purposes of naming preferences file - Anil*/
+	public BubbleAdventure(long id) {
+		userId = id;
+	}
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		gsm = new GameStateManager();
 		Gdx.gl.glClearColor(1, 0, 0, 1);
+		filename = "Bubble" + userId;
+		pref = Gdx.app.getPreferences(filename);
+		if(!(pref.contains("highscore"))) {
+			pref.putInteger("highscore", 0);
+			pref.flush();
+		}
 		gsm.push(new MenuState(gsm));
 		scoreNum = 0;
 
@@ -56,5 +73,25 @@ public class BubbleAdventure extends ApplicationAdapter {
 	public static int getScore(){return scoreNum;}
 
 	public static void resetScore(){scoreNum = 0;}
+
+	//returns user's high score
+	public static int getPrefScore()
+	{
+		return pref.getInteger("highscore");
+	}
+
+	/* checks new score to determine if high score has been achieved. Updates value as necessary.
+	 * Boolean return value for later use do display new high score notification*/
+	public static boolean checkHighScore(int score){
+
+		if(score > getPrefScore()){
+			pref.putInteger("highscore", score);
+			pref.flush();//writes changes to preferences
+			return true;
+		}
+
+		return false;
+
+	}
 
 }
