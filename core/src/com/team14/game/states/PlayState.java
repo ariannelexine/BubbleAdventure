@@ -81,7 +81,7 @@ public class PlayState extends State {
         bubble = new Bubble(50, 150);
         size = 0;
         cam.setToOrtho(false, BubbleAdventure.WIDTH / 2, BubbleAdventure.HEIGHT / 2); //sets view on screen to a certain part of Game World
-        bg = new Texture("bg1.jpg");
+        bg = new Texture("bg.jpg");
         gameoverImg = new Texture("GameOver.png");
 
         music = Gdx.audio.newMusic(Gdx.files.internal("game_2.wav"));

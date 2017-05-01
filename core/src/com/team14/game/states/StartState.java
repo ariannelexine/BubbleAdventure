@@ -22,7 +22,7 @@ public class StartState extends State {
     public StartState(GameStateManager gsm) {
         super(gsm);
         cam.setToOrtho(false, BubbleAdventure.WIDTH / 2, BubbleAdventure.HEIGHT / 2);
-        bg = new Texture("bg1.jpg");
+        bg = new Texture("bg.jpg");
         descString = "Bubba eats fruits & veggies to " +
                     "\naccumulate points. Eating junk " +
                     "\nfood will make him fluffy and " +
@@ -53,8 +53,7 @@ public class StartState extends State {
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
         sb.draw(bg, 0,0);
-        sb.draw(textbox, 10, 220); //should probably not hard code will deal wid it l8r
-        //description.setColor(Color.CYAN);
+        sb.draw(textbox, 10, 220);
         description.draw(sb, descString,40, 343);
         sb.draw(startBubble, 50, 150);
         sb.end();

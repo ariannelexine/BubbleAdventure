@@ -19,18 +19,18 @@ import com.team14.game.states.PlayState;
 public class MenuState extends State{
     private Texture background;
     private Texture playBtn;
-    private Texture musicOffBtn;
+
     private Texture musicOnBtn;
     private BitmapFont title;
     private String titleString;
-    //private Texture soundBtn;
+
     private float playBtnXPos;
     private float playBtnYPos;
+
     //all gameplay music
-    private float musicOffBtnXPos;
-    private float musicOffBtnYPos;
     private float musicOnBtnXPos;
     private float musicOnBtnYPos;
+    private boolean musicOn;
 
     //For displaying High Score
     private String scoreString;
@@ -45,19 +45,17 @@ public class MenuState extends State{
         title = new BitmapFont(Gdx.files.internal("title.fnt"));
         titleString = "   Bubble\n" +
                       "Adventure";
-        title.getData().setScale(.9f, 1.3f);
+        title.getData().setScale(.9f, 1.5f);
 
         playBtn = new Texture("playbtn.png");
         playBtnXPos = cam.position.x - (playBtn.getWidth() / 2);
         playBtnYPos = cam.position.y - (playBtn.getHeight());
 
-        //music off button
-        musicOffBtn = new Texture("musicOff.png");
-        musicOffBtnXPos = cam.position.x + (musicOffBtn.getWidth() / 2);
-        musicOffBtnYPos = playBtnYPos - musicOffBtn.getHeight() - (musicOffBtn.getHeight() / 2);
         musicOnBtn = new Texture("musicOn.png");
-        musicOnBtnXPos = cam.position.x - musicOnBtn.getWidth() - (musicOnBtn.getWidth() / 2);
-        musicOnBtnYPos = playBtnYPos - musicOnBtn.getHeight() - (musicOnBtn.getHeight() / 2);
+        musicOnBtnXPos = cam.position.x + (cam.viewportWidth/2) - musicOnBtn.getWidth() - 10;
+        musicOnBtnYPos = cam.position.y - cam.position.y + 10;
+        musicOn = true;
+
         scoreString = "High Score: " + BubbleAdventure.getPrefScore();
         scoreFont = new BitmapFont(Gdx.files.internal("score.fnt"));
         scoreFont.getData().setScale(.6f);
@@ -72,7 +70,7 @@ public class MenuState extends State{
             Vector3 tmp=new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
             cam.unproject(tmp);//can't unproject vector 2 so vector3 used
             Rectangle textureBoundsPlayBtn=new Rectangle(playBtnXPos,playBtnYPos, playBtn.getWidth(), playBtn.getHeight());
-            Rectangle textureBoundsMusicOffBtn=new Rectangle(musicOffBtnXPos,musicOffBtnYPos, musicOffBtn.getWidth(), musicOffBtn.getHeight());
+           // Rectangle textureBoundsMusicOffBtn=new Rectangle(musicOffBtnXPos,musicOffBtnYPos, musicOffBtn.getWidth(), musicOffBtn.getHeight());
             Rectangle textureBoundsMusicOnBtn=new Rectangle(musicOnBtnXPos,musicOnBtnYPos, musicOnBtn.getWidth(), musicOnBtn.getHeight());
             // texture btn_xpos is the x position of the texture
             // texture btn_ypos is the y position of the texture
@@ -83,22 +81,25 @@ public class MenuState extends State{
                 blop.play(PlayState.musicControl);
                 gsm.set(new StartState(gsm));
             }
-            //toggles off for music by adjusting the volume
-            if(textureBoundsMusicOffBtn.contains(tmp.x,tmp.y))
-            {
-                //turn music off 0f
-                Bubble.bubbleVolume = 0f;
-                PlayState.musicControl = 0f;
 
-
-            }
             //toggles on for music by adjusting the volume
             if(textureBoundsMusicOnBtn.contains(tmp.x,tmp.y))
             {
-                //turn music on 1f - full volume
-                Bubble.bubbleVolume = 1f;
-                PlayState.musicControl = 1f;
-                blop.play(PlayState.musicControl);
+                if(musicOn == true){
+                    musicOnBtn = new Texture("musicOff.png");
+                    Bubble.bubbleVolume = 0f;
+                    PlayState.musicControl = 0f;
+                    musicOn = false;
+                }
+                else{
+                    //turn music on 1f - full volume
+                    musicOnBtn = new Texture("musicOn.png");
+                    Bubble.bubbleVolume = 1f;
+                    PlayState.musicControl = 1f;
+                    blop.play(PlayState.musicControl);
+                    musicOn = true;
+                }
+
             }
         }
 
@@ -122,11 +123,10 @@ public class MenuState extends State{
         sb.draw(background, 0, 0);//draw(image to draw, x-pos, y-pos, width of screen, height)
         //0,0 = bottom left hand of screen
 
-        title.draw(sb, titleString,10, 350);
-        sb.draw(playBtn, cam.position.x = playBtnXPos, playBtnYPos); //centers button
-        sb.draw(musicOffBtn, cam.position.x = musicOffBtnXPos, musicOffBtnYPos);
-        sb.draw(musicOnBtn, cam.position.x = musicOnBtnXPos, musicOnBtnYPos);
-        scoreFont.draw(sb, scoreString, cam.position.x, BubbleAdventure.HEIGHT/2 - 5);
+        title.draw(sb, titleString,10, 340);
+        sb.draw(playBtn, playBtnXPos, playBtnYPos);
+        sb.draw(musicOnBtn, musicOnBtnXPos, musicOnBtnYPos);
+        scoreFont.draw(sb, scoreString, cam.position.x / 3, BubbleAdventure.HEIGHT/2 - 5);
         scoreFont.setUseIntegerPositions(false);//fixes shaking of score display
 
         sb.end(); //close
@@ -137,7 +137,6 @@ public class MenuState extends State{
     public void dispose() {
         background.dispose();
         playBtn.dispose();
-        musicOffBtn.dispose();
         musicOnBtn.dispose();
         blop.dispose();
     }
