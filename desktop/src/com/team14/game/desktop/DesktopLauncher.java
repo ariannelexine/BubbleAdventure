@@ -10,6 +10,6 @@ public class DesktopLauncher {
 		config.width = BubbleAdventure.WIDTH;
 		config.height = BubbleAdventure.HEIGHT;
 		config.title = BubbleAdventure.TITLE;
-		new LwjglApplication(new BubbleAdventure(), config);
+		//new LwjglApplication(new BubbleAdventure(), config);
 	}
 }

@@ -21,6 +21,8 @@ public class MenuState extends State{
     private Texture playBtn;
     private Texture musicOffBtn;
     private Texture musicOnBtn;
+    private BitmapFont title;
+    private String titleString;
     //private Texture soundBtn;
     private float playBtnXPos;
     private float playBtnYPos;
@@ -40,18 +42,25 @@ public class MenuState extends State{
         super(gsm);
         cam.setToOrtho(false, BubbleAdventure.WIDTH / 2, BubbleAdventure.HEIGHT / 2);
         background = new Texture("bg.jpg");
+        title = new BitmapFont(Gdx.files.internal("title.fnt"));
+        titleString = "   Bubble\n" +
+                      "Adventure";
+        title.getData().setScale(.9f, 1.3f);
+
         playBtn = new Texture("playbtn.png");
-        playBtnXPos = playBtn.getWidth() / 2;
-        playBtnYPos = cam.position.y;
+        playBtnXPos = cam.position.x - (playBtn.getWidth() / 2);
+        playBtnYPos = cam.position.y - (playBtn.getHeight());
+
         //music off button
-        musicOffBtn = new Texture("musicOffBtn.png");
-        musicOffBtnXPos = musicOffBtn.getWidth()/3 + (2*musicOffBtn.getWidth());
-        musicOffBtnYPos = cam.position.y / 2;
-        musicOnBtn = new Texture("musicOnBtn.png");
-        musicOnBtnXPos = musicOnBtn.getWidth()/5 + musicOnBtn.getWidth();
-        musicOnBtnYPos = cam.position.y / 2;
-        scoreString = "Your High Score: " + BubbleAdventure.getPrefScore();
-        scoreFont = new BitmapFont();
+        musicOffBtn = new Texture("musicOff.png");
+        musicOffBtnXPos = cam.position.x + (musicOffBtn.getWidth() / 2);
+        musicOffBtnYPos = playBtnYPos - musicOffBtn.getHeight() - (musicOffBtn.getHeight() / 2);
+        musicOnBtn = new Texture("musicOn.png");
+        musicOnBtnXPos = cam.position.x - musicOnBtn.getWidth() - (musicOnBtn.getWidth() / 2);
+        musicOnBtnYPos = playBtnYPos - musicOnBtn.getHeight() - (musicOnBtn.getHeight() / 2);
+        scoreString = "High Score: " + BubbleAdventure.getPrefScore();
+        scoreFont = new BitmapFont(Gdx.files.internal("score.fnt"));
+        scoreFont.getData().setScale(.6f);
         blop = Gdx.audio.newSound(Gdx.files.internal("Blop.wav"));
     }
 
@@ -90,8 +99,6 @@ public class MenuState extends State{
                 Bubble.bubbleVolume = 1f;
                 PlayState.musicControl = 1f;
                 blop.play(PlayState.musicControl);
-
-
             }
         }
 
@@ -114,11 +121,12 @@ public class MenuState extends State{
         sb.begin(); //opens
         sb.draw(background, 0, 0);//draw(image to draw, x-pos, y-pos, width of screen, height)
         //0,0 = bottom left hand of screen
+
+        title.draw(sb, titleString,10, 350);
         sb.draw(playBtn, cam.position.x = playBtnXPos, playBtnYPos); //centers button
         sb.draw(musicOffBtn, cam.position.x = musicOffBtnXPos, musicOffBtnYPos);
         sb.draw(musicOnBtn, cam.position.x = musicOnBtnXPos, musicOnBtnYPos);
-        scoreFont.setColor(Color.GOLD);//can also input rgb values
-        scoreFont.draw(sb, scoreString, cam.position.x, BubbleAdventure.HEIGHT/2);
+        scoreFont.draw(sb, scoreString, cam.position.x, BubbleAdventure.HEIGHT/2 - 5);
         scoreFont.setUseIntegerPositions(false);//fixes shaking of score display
 
         sb.end(); //close

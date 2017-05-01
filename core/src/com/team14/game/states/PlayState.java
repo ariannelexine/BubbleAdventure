@@ -138,7 +138,8 @@ public class PlayState extends State {
 
         //construct score string and font
         scoreString = "Score: 0";
-        scoreFont = new BitmapFont();
+        scoreFont = new BitmapFont(Gdx.files.internal("score.fnt"));
+        scoreFont.getData().setScale(.8f);
 
         gameover = false;
     }
@@ -293,10 +294,7 @@ public class PlayState extends State {
         sb.draw(bubble.getTexture(), bubble.getPosition().x, bubble.getPosition().y);
 
 
-        /*Rendering score output*/
-        scoreFont.setColor(Color.GOLD);//can also input rgb values
-        scoreFont.draw(sb, scoreString, cam.position.x - cam.viewportWidth/2, cam.viewportHeight);
-        scoreFont.setUseIntegerPositions(false);//fixes shaking of score display
+
 
         for(Vegetable vegetable : vegetables) {
             sb.draw(vegetable.getVegetable(), vegetable.getPosVegetable().x, vegetable.getPosVegetable().y);
@@ -310,6 +308,10 @@ public class PlayState extends State {
         for(BottomObstacle bottomObstacle : bottomObstacles) {
             sb.draw(bottomObstacle.getBottomObstacle(), bottomObstacle.getPosBottom().x, bottomObstacle.getPosBottom().y);
         }
+
+        /*Rendering score output*/
+        scoreFont.draw(sb, scoreString, cam.position.x - cam.viewportWidth/2, cam.viewportHeight);
+        scoreFont.setUseIntegerPositions(false);//fixes shaking of score display
 
         if(gameover)
         {

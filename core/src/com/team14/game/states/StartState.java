@@ -15,7 +15,7 @@ import com.team14.game.BubbleAdventure;
 
 public class StartState extends State {
 
-    private Texture startBubble, bg, tap;
+    private Texture startBubble, bg, textbox;
     private BitmapFont description;
     private String descString;
 
@@ -23,12 +23,15 @@ public class StartState extends State {
         super(gsm);
         cam.setToOrtho(false, BubbleAdventure.WIDTH / 2, BubbleAdventure.HEIGHT / 2);
         bg = new Texture("bg1.jpg");
-        tap = new Texture("Tap.png");
-        descString = "BUBBA "+ " EATS VEGETABLES TO \nACCUMULATE POINTS. EATING \nJUNK FOOD WILL MAKE HIM \nFLUFFY AND " +
-                "TOO MUCH FOOD \nWILL MAKE HIM POP. OH AND \nWATCH OUT FOR OBSTACLES!\n";
-        description = new BitmapFont();
-        description.getData().setScale(0.8f, 0.8f);//resize text by scaling it
+        descString = "Bubba eats fruits & veggies to " +
+                    "\naccumulate points. Eating junk " +
+                    "\nfood will make him fluffy and " +
+                    "\ntoo much food will make him pop. " +
+                    "\nOH and watch out for obstacles!";
+        description = new BitmapFont(Gdx.files.internal("desc.fnt"));
+        description.getData().setScale(0.37f, 0.45f);//resize text by scaling it
         startBubble = new Texture("SmallBubble.png");
+        textbox = new Texture("textbox.png");
 
     }
 
@@ -50,9 +53,9 @@ public class StartState extends State {
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
         sb.draw(bg, 0,0);
-        sb.draw(tap, 50, 200); //should probably not hard code will deal wid it l8r
-        description.setColor(Color.CYAN);
-        description.draw(sb, descString, 30, 130);
+        sb.draw(textbox, 10, 220); //should probably not hard code will deal wid it l8r
+        //description.setColor(Color.CYAN);
+        description.draw(sb, descString,40, 343);
         sb.draw(startBubble, 50, 150);
         sb.end();
     }
@@ -61,7 +64,7 @@ public class StartState extends State {
     public void dispose() {
         startBubble.dispose();
         bg.dispose();
-        tap.dispose();
+        textbox.dispose();
         description.dispose();
     }
 }

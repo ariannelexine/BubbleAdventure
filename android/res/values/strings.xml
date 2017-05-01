@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">BubbleAdventure</string>
-    <string name="title_activity_login">Welcome to Bubble Adventure!</string>
+    <string name="title_activity_login">Bubble Adventure</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
