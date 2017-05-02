@@ -153,8 +153,11 @@ public class PlayState extends State {
             //If the bubble has collided with the obstacle, gameover will be set to true
             //so when user touches screen, reset to the MenuState again and reset score
             if(gameover) {
-
+                boolean tempMusicOn = MenuState.musicOn;
+                String tempMusicBtn = MenuState.musicBtn;
                 gsm.set(new MenuState(gsm));
+                MenuState.musicOn= tempMusicOn;
+                MenuState.musicBtn= tempMusicBtn;
             }
 
             //if game over is still false, bubble jumps

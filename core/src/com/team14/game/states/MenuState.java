@@ -20,7 +20,7 @@ public class MenuState extends State{
     private Texture background;
     private Texture playBtn;
 
-    private Texture musicOnBtn;
+    private static Texture musicOnBtn;
     private BitmapFont title;
     private String titleString;
 
@@ -30,7 +30,8 @@ public class MenuState extends State{
     //all gameplay music
     private float musicOnBtnXPos;
     private float musicOnBtnYPos;
-    private boolean musicOn;
+    public static boolean musicOn;
+    public static String musicBtn = "musicOn.png";
 
     //For displaying High Score
     private String scoreString;
@@ -51,7 +52,7 @@ public class MenuState extends State{
         playBtnXPos = cam.position.x - (playBtn.getWidth() / 2);
         playBtnYPos = cam.position.y - (playBtn.getHeight());
 
-        musicOnBtn = new Texture("musicOn.png");
+        musicOnBtn = new Texture(musicBtn);
         musicOnBtnXPos = cam.position.x + (cam.viewportWidth/2) - musicOnBtn.getWidth() - 10;
         musicOnBtnYPos = cam.position.y - cam.position.y + 10;
         musicOn = true;
@@ -86,14 +87,16 @@ public class MenuState extends State{
             if(textureBoundsMusicOnBtn.contains(tmp.x,tmp.y))
             {
                 if(musicOn == true){
-                    musicOnBtn = new Texture("musicOff.png");
+                    musicBtn = "musicOff.png";
+                    musicOnBtn = new Texture(musicBtn);
                     Bubble.bubbleVolume = 0f;
                     PlayState.musicControl = 0f;
                     musicOn = false;
                 }
                 else{
                     //turn music on 1f - full volume
-                    musicOnBtn = new Texture("musicOn.png");
+                    musicBtn = "musicOn.png";
+                    musicOnBtn = new Texture(musicBtn);
                     Bubble.bubbleVolume = 1f;
                     PlayState.musicControl = 1f;
                     blop.play(PlayState.musicControl);
