@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="top"
         android:scaleType="centerCrop"
-        android:src="@drawable/bg_bubble"
+        android:src="@drawable/bg1"
         android:contentDescription="" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
