@@ -17,6 +17,7 @@ public class BottomObstacle {
     private Vector2 posBottom;
     private Rectangle boundsBottom;
     private Random rand;
+    public static int randomNum;
 
     private String[] botObstacleArray = {"cart.png", "wetfloor.png", "cart.png", "wetfloor.png"};
 
@@ -26,7 +27,7 @@ public class BottomObstacle {
         posBottom = new Vector2(x + 250, 0);
         //the + & - 20 gives a little leeway for the bubble to touch obstacle image when they're not rectangular in shape
         boundsBottom = new Rectangle(posBottom.x + 10, posBottom.y - 10, bottomObstacle.getWidth(), bottomObstacle.getHeight());
-
+        rand = new Random();
     }
 
     public Texture getBottomObstacle() {
@@ -46,12 +47,19 @@ public class BottomObstacle {
     }
 
 
-    public void reposition(float x) {
-        rand = new Random();
+    public void reposition(float x, Rectangle last) {
         //Random number between 20 and 200
-        int randomNum = rand.nextInt(200 + 1 - 20) + 20;
+        randomNum = rand.nextInt(200 + 1 - 50) + 50;
         posBottom.set(x + randomNum + 150, 0);
         boundsBottom.setPosition(posBottom.x + 10, posBottom.y - 10);
+
+        while(boundsBottom.overlaps(last))
+        {
+            posBottom.set(x + randomNum + bottomObstacle.getWidth(), 0);
+            boundsBottom.setPosition(posBottom.x + 10, posBottom.y - 10);
+            x+=randomNum;
+        }
+
 
     }
 

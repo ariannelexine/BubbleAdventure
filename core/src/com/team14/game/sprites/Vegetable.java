@@ -52,7 +52,7 @@ public class Vegetable {
 
     public void reposition(float x, Rectangle top, Rectangle bot, Rectangle junk){
 
-        /*done = false;
+        done = false;
         count = 0;
         posVegetable.set(x, rand.nextInt(FLUCTUATION));
         boundsVeg.setPosition(posVegetable.x + 5, posVegetable.y - 5);
@@ -60,6 +60,7 @@ public class Vegetable {
         while(!done){
             if(boundsVeg.contains(top))
             {
+                vegetable.dispose();
                 posVegetable.set(x, posVegetable.y - top.getHeight() - vegetable.getHeight());
                 boundsVeg.setPosition(posVegetable.x + 5, posVegetable.y - 5);
                 count++;
@@ -67,6 +68,7 @@ public class Vegetable {
 
             if(boundsVeg.contains(bot))
             {
+                vegetable.dispose();
                 posVegetable.set(x, posVegetable.y + bot.getHeight() + vegetable.getHeight());
                 boundsVeg.setPosition(posVegetable.x, posVegetable.y);
                 done = false;
@@ -75,6 +77,7 @@ public class Vegetable {
 
             if(boundsVeg.contains(junk))
             {
+                vegetable.dispose();
                 posVegetable.set(x + junk.getWidth()*2, posVegetable.y);
                 boundsVeg.setPosition(posVegetable.x, posVegetable.y);
                 done = false;
@@ -87,25 +90,6 @@ public class Vegetable {
             //resets count for next loop if needed
             count = 0;
 
-
-        }*/
-        posVegetable.set(x, rand.nextInt(FLUCTUATION));
-        boundsVeg.setPosition(posVegetable.x + 5, posVegetable.y - 5);
-        System.out.println(top.x);
-
-        if(boundsVeg.contains(top))
-        {
-            this.reposition(x, top, bot, junk);
-        }
-
-        if(boundsVeg.contains(bot))
-        {
-            this.reposition(x, top, bot, junk);
-        }
-
-        if(boundsVeg.contains(junk))
-        {
-            this.reposition(x, top, bot, junk);
         }
 
     }

@@ -32,7 +32,7 @@ public class PlayState extends State {
     private static final int JUNK_COUNT = 5;
     private static final int JUNK_SPACING = 200;
 
-    private static final int OBSTACLE_SPACING = 300;
+    private static final int OBSTACLE_SPACING = 200;
     private static final int OBSTACLE_COUNT = 4;
     //keeps track of whether or not the last state of the character was large or not. Used to determine whether score increments
     private boolean wasBig = false;
@@ -124,14 +124,14 @@ public class PlayState extends State {
         /* TO DO figure out spacing issue with obstacles to keep them from overlapping or being too close to eachother*/
         topObstacles= new Array<TopObstacle>();
         for(int i = 1; i <= OBSTACLE_COUNT; i++) {
-            topObstacles.add(new TopObstacle(i * (OBSTACLE_SPACING + TopObstacle.OBSTACLE_WIDTH), i - 1));
+            topObstacles.add(new TopObstacle(last_posTop.x + (OBSTACLE_SPACING + last_boundsTop.getWidth()), i - 1));
             last_posTop.set(topObstacles.peek().getPosTop());
             last_boundsTop.set(topObstacles.peek().getBoundsTop());
         }
 
         bottomObstacles= new Array<BottomObstacle>();
         for(int i = 1; i <= OBSTACLE_COUNT; i++) {
-            bottomObstacles.add(new BottomObstacle(i *  (OBSTACLE_SPACING + BottomObstacle.OBSTACLE_WIDTH), i - 1));
+            bottomObstacles.add(new BottomObstacle(last_posBot.x + (OBSTACLE_SPACING + last_boundsBot.getWidth()), i - 1));
             last_posBot.set(bottomObstacles.peek().getPosBottom());
             last_boundsBot.set(bottomObstacles.peek().getBoundsBottom());
         }
@@ -199,7 +199,7 @@ public class PlayState extends State {
          * food will take into account where the last food position and last obstacle positions are.*/
         for(TopObstacle topObstacle : topObstacles) {
             if(cam.position.x - (cam.viewportWidth / 2) > topObstacle.getPosTop().x + topObstacle.getTopObstacle().getWidth()) {
-                topObstacle.reposition(topObstacle.getPosTop().x + ((TopObstacle.OBSTACLE_WIDTH + OBSTACLE_SPACING) * OBSTACLE_COUNT));
+                topObstacle.reposition(last_posTop.x + ((last_boundsTop.getWidth() + OBSTACLE_SPACING)), last_boundsTop);
                 //update the last position and boundary
                 last_posTop.set(topObstacle.getPosTop());
                 last_boundsTop.set(topObstacle.getBoundsTop());
@@ -218,7 +218,7 @@ public class PlayState extends State {
 
         for(BottomObstacle bottomObstacle : bottomObstacles) {
             if(cam.position.x - (cam.viewportWidth / 2) > bottomObstacle.getPosBottom().x + bottomObstacle.getBottomObstacle().getWidth()) {
-                bottomObstacle.reposition(bottomObstacle.getPosBottom().x + ((BottomObstacle.OBSTACLE_WIDTH + OBSTACLE_SPACING) * OBSTACLE_COUNT));
+                bottomObstacle.reposition(last_boundsBot.x + ((BottomObstacle.OBSTACLE_WIDTH + OBSTACLE_SPACING)), last_boundsBot);
                 //update the last position and boundry
                 last_posBot.set(bottomObstacle.getPosBottom());
                 last_boundsBot.set(bottomObstacle.getBoundsBottom());
@@ -235,15 +235,15 @@ public class PlayState extends State {
             if(cam.position.x - (cam.viewportWidth / 2) > vegetable.getPosVegetable().x + vegetable.getVegetable().getWidth()) {
                 vegetable.reposition(vegetable.getPosVegetable().x + ((Vegetable.VEGETABLE_WIDTH + VEGETABLE_SPACING) * VEGETABLE_COUNT), last_boundsTop, last_boundsBot, last_boundsJunk);
                 vegetable.resetLock();//resets the lock on the object once it is out of view.
-                last_posVeg.set(vegetable.getPosVegetable());
-                last_boundsVeg.set(vegetable.getBoundsVeg());
+                last_posJunk.set(vegetable.getPosVegetable());
+                last_boundsJunk.set(vegetable.getBoundsVeg());
             }
 
             //if the rectangular bounds of vegetable overlap with the bubbles rectangular bounds
             if(vegetable.collides(bubble.getBounds())) {
                 healthPickup.play(musicControl);
                 //On collision, reposition the vegetable out of the camera view towards the left of the bubble
-               // vegetable.reposition(cam.position.x - cam.viewportWidth, last_boundsTop, last_boundsBot, last_boundsJunk);
+                vegetable.reposition(cam.position.x - cam.viewportWidth, last_boundsTop, last_boundsBot, last_boundsJunk);
                 last_posJunk.set(vegetable.getPosVegetable());
                 last_boundsJunk.set(vegetable.getBoundsVeg());
 
@@ -262,7 +262,7 @@ public class PlayState extends State {
 
         for(JunkFood junk : junkFoods) {
             if(cam.position.x - (cam.viewportWidth / 2) > junk.getPosJunk().x + junk.getJunk().getWidth()) {
-                //junk.reposition(junk.getPosJunk().x + ((JunkFood.JF_WIDTH + JUNK_SPACING) * JUNK_COUNT), last_boundsTop, last_boundsBot, last_boundsVeg);
+                junk.reposition(junk.getPosJunk().x + ((JunkFood.JF_WIDTH + JUNK_SPACING) * JUNK_COUNT), last_boundsTop, last_boundsBot, last_boundsVeg);
                 last_posJunk.set(junk.getPosJunk());
                 last_boundsJunk.set(junk.getBoundsJunk());
             }
@@ -270,14 +270,15 @@ public class PlayState extends State {
             if(junk.collides(bubble.getBounds())) {
                 junkPickup.play(musicControl);
                 if(size != bubble.MAX_SIZE) {
-                  //  junk.reposition(cam.position.x - cam.viewportWidth, last_boundsTop, last_boundsBot, last_boundsVeg);
+                    junk.reposition(cam.position.x - cam.viewportWidth, last_boundsTop, last_boundsBot, last_boundsVeg);
                     size++;
                     bubble.grow((int) bubble.getPosition().x, (int) bubble.getPosition().y, size);
                     wasBig = true;//state of the character has changed. will not be able to score until small again
 
                 }
                 else{
-                   // junk.reposition(cam.position.x - cam.viewportWidth, last_boundsTop, last_boundsBot, last_boundsVeg);
+                    //blop.play();
+                    junk.reposition(cam.position.x - cam.viewportWidth, last_boundsTop, last_boundsBot, last_boundsVeg);
                     bubble.colliding = true;
                     gameover = true;
                 }
@@ -339,3 +340,5 @@ public class PlayState extends State {
 
     }
 }
+
+

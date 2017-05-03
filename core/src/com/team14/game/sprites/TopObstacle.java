@@ -18,6 +18,7 @@ public class TopObstacle {
     private Vector2 posTop;
     private Rectangle boundsTop;
     private Random random;
+    public static int randomNum;
 
     private String[] topObstacleArray = {"Sign1.png", "Sign2.png", "Sign1.png", "Sign2.png"};
 
@@ -25,6 +26,8 @@ public class TopObstacle {
         topObstacle = new Texture(topObstacleArray[i]);
         posTop = new Vector2(x, (BubbleAdventure.HEIGHT / 2) - topObstacle.getHeight());
         boundsTop = new Rectangle(posTop.x, posTop.y, topObstacle.getWidth(), topObstacle.getHeight());
+        random = new Random();
+
 
     }
 
@@ -45,11 +48,17 @@ public class TopObstacle {
     }
 
 
-    public void reposition(float x) {
-        random = new Random();
-        int randomNum = random.nextInt(200 + 1 - 20) + 20;
+    public void reposition(float x, Rectangle last) {
+        randomNum = random.nextInt(200 + 1 - 50) + 50;
         posTop.set(x + randomNum + topObstacle.getWidth(), (BubbleAdventure.HEIGHT / 2) - topObstacle.getHeight());
         boundsTop.setPosition(posTop.x, posTop.y);
+        while(boundsTop.overlaps(last))
+        {
+            //System.out.printf("overlap\n");//testing purposes
+            posTop.set(x + randomNum + topObstacle.getWidth(), 325);
+            boundsTop.setPosition(posTop.x, posTop.y);
+            x+=randomNum;
+        }
 
     }
 

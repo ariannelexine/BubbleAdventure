@@ -19,10 +19,9 @@ import com.team14.game.states.PlayState;
 public class MenuState extends State{
     private Texture background;
     private Texture playBtn;
+    private Texture logo;
 
     private static Texture musicOnBtn;
-    private BitmapFont title;
-    private String titleString;
 
     private float playBtnXPos;
     private float playBtnYPos;
@@ -43,14 +42,11 @@ public class MenuState extends State{
         super(gsm);
         cam.setToOrtho(false, BubbleAdventure.WIDTH / 2, BubbleAdventure.HEIGHT / 2);
         background = new Texture("bg.jpg");
-        title = new BitmapFont(Gdx.files.internal("title.fnt"));
-        titleString = "   Bubble\n" +
-                      "Adventure";
-        title.getData().setScale(.9f, 1.5f);
+        logo = new Texture("logo.png");
 
         playBtn = new Texture("playbtn.png");
         playBtnXPos = cam.position.x - (playBtn.getWidth() / 2);
-        playBtnYPos = cam.position.y - (playBtn.getHeight());
+        playBtnYPos = cam.position.y - (playBtn.getHeight()) - 20;
 
         musicOnBtn = new Texture(musicBtn);
         musicOnBtnXPos = cam.position.x + (cam.viewportWidth/2) - musicOnBtn.getWidth() - 10;
@@ -126,7 +122,7 @@ public class MenuState extends State{
         sb.draw(background, 0, 0);//draw(image to draw, x-pos, y-pos, width of screen, height)
         //0,0 = bottom left hand of screen
 
-        title.draw(sb, titleString,10, 340);
+        sb.draw(logo, 0, cam.position.y - 20);
         sb.draw(playBtn, playBtnXPos, playBtnYPos);
         sb.draw(musicOnBtn, musicOnBtnXPos, musicOnBtnYPos);
         scoreFont.draw(sb, scoreString, cam.position.x / 3, BubbleAdventure.HEIGHT/2 - 5);
@@ -140,6 +136,7 @@ public class MenuState extends State{
     public void dispose() {
         background.dispose();
         playBtn.dispose();
+        logo.dispose();
         musicOnBtn.dispose();
         blop.dispose();
     }
