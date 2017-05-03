@@ -18,7 +18,7 @@ public class BottomObstacle {
     private Rectangle boundsBottom;
     private Random rand;
 
-    private String[] botObstacleArray = {"cart.png", "wetfloor.png"};
+    private String[] botObstacleArray = {"cart.png", "wetfloor.png", "cart.png", "wetfloor.png"};
 
     public BottomObstacle(float x, int i) {
         rand = new Random();
@@ -46,19 +46,12 @@ public class BottomObstacle {
     }
 
 
-    public void reposition(float x, Rectangle last) {
+    public void reposition(float x) {
         rand = new Random();
-        int randomNum = rand.nextInt(((BubbleAdventure.WIDTH * 2)+ 1 - bottomObstacle.getWidth()) + bottomObstacle.getWidth());
-        posBottom.set(x + randomNum, 0);
+        //Random number between 20 and 200
+        int randomNum = rand.nextInt(200 + 1 - 20) + 20;
+        posBottom.set(x + randomNum + 150, 0);
         boundsBottom.setPosition(posBottom.x + 10, posBottom.y - 10);
-
-        //If the reposition overlaps the last known reposition boundry adjust be moving the obstacle by its width
-        while(boundsBottom.overlaps(last))
-        {
-            posBottom.set(x + randomNum + bottomObstacle.getWidth(), 0);
-            boundsBottom.setPosition(posBottom.x + 10, posBottom.y - 10);
-            x+=randomNum;
-        }
 
     }
 

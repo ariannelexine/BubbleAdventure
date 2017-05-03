@@ -52,7 +52,7 @@ public class Vegetable {
 
     public void reposition(float x, Rectangle top, Rectangle bot, Rectangle junk){
 
-        done = false;
+        /*done = false;
         count = 0;
         posVegetable.set(x, rand.nextInt(FLUCTUATION));
         boundsVeg.setPosition(posVegetable.x + 5, posVegetable.y - 5);
@@ -73,13 +73,13 @@ public class Vegetable {
                 count++;
             }
 
-            /*if(boundsVeg.contains(junk))
+            if(boundsVeg.contains(junk))
             {
                 posVegetable.set(x + junk.getWidth()*2, posVegetable.y);
                 boundsVeg.setPosition(posVegetable.x, posVegetable.y);
                 done = false;
                 count++;
-            }*/
+            }
 
             if(count == 0)
                 done = true;
@@ -87,7 +87,27 @@ public class Vegetable {
             //resets count for next loop if needed
             count = 0;
 
+
+        }*/
+        posVegetable.set(x, rand.nextInt(FLUCTUATION));
+        boundsVeg.setPosition(posVegetable.x + 5, posVegetable.y - 5);
+        System.out.println(top.x);
+
+        if(boundsVeg.contains(top))
+        {
+            this.reposition(x, top, bot, junk);
         }
+
+        if(boundsVeg.contains(bot))
+        {
+            this.reposition(x, top, bot, junk);
+        }
+
+        if(boundsVeg.contains(junk))
+        {
+            this.reposition(x, top, bot, junk);
+        }
+
     }
 
     public boolean collides(Rectangle player){

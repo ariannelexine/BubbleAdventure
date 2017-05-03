@@ -19,11 +19,11 @@ public class TopObstacle {
     private Rectangle boundsTop;
     private Random random;
 
-    public TopObstacle(float x) {
-        topObstacle = new Texture("sign.png");
-        random = new Random();
-        int randomNum = random.nextInt(((BubbleAdventure.WIDTH / 2) + 1 - topObstacle.getWidth()) + topObstacle.getWidth());
-        posTop = new Vector2(x + randomNum, 325);
+    private String[] topObstacleArray = {"Sign1.png", "Sign2.png", "Sign1.png", "Sign2.png"};
+
+    public TopObstacle(float x, int i) {
+        topObstacle = new Texture(topObstacleArray[i]);
+        posTop = new Vector2(x, (BubbleAdventure.HEIGHT / 2) - topObstacle.getHeight());
         boundsTop = new Rectangle(posTop.x, posTop.y, topObstacle.getWidth(), topObstacle.getHeight());
 
     }
@@ -45,20 +45,11 @@ public class TopObstacle {
     }
 
 
-    public void reposition(float x, Rectangle last) {
+    public void reposition(float x) {
         random = new Random();
-        int randomNum = random.nextInt( ((BubbleAdventure.WIDTH * 2) + 1 - topObstacle.getWidth()) + topObstacle.getWidth());
-        posTop.set(x + randomNum, 325);
+        int randomNum = random.nextInt(200 + 1 - 20) + 20;
+        posTop.set(x + randomNum + topObstacle.getWidth(), (BubbleAdventure.HEIGHT / 2) - topObstacle.getHeight());
         boundsTop.setPosition(posTop.x, posTop.y);
-
-        //If the reposition overlaps the last known reposition boundry adjust be moving the obstacle by its width
-        while(boundsTop.overlaps(last))
-        {
-            //System.out.printf("overlap\n");//testing purposes
-            posTop.set(x + randomNum + topObstacle.getWidth(), 325);
-            boundsTop.setPosition(posTop.x, posTop.y);
-            x+=randomNum;
-        }
 
     }
 
