@@ -68,7 +68,6 @@ public class Vegetable {
 
             if(boundsVeg.contains(bot))
             {
-                vegetable.dispose();
                 posVegetable.set(x, posVegetable.y + bot.getHeight() + vegetable.getHeight());
                 boundsVeg.setPosition(posVegetable.x, posVegetable.y);
                 done = false;
